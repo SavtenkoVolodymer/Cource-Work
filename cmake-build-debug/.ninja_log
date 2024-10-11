@@ -1,0 +1,18 @@
+# ninja log v5
+19	1021	7502669334456695	CMakeFiles/HotelManegement.dir/Guest.cpp.obj	cf30879d926eab61
+10	683	7502675920994985	CMakeFiles/HotelManegement.dir/Reservation.cpp.obj	b9fdea30dc0eea9a
+9	882	7502669333056716	CMakeFiles/HotelManegement.dir/Admin.cpp.obj	7edc926a39223ff
+683	942	7502675923485853	HotelManegement.exe	9ccbeda5208624
+4	879	7502669333036730	CMakeFiles/HotelManegement.dir/Room.cpp.obj	ec2e5954190f139d
+4	592	7502675920097429	CMakeFiles/HotelManegement.dir/main.cpp.obj	80736e70edcca289
+56	1054	7502669334766702	CMakeFiles/HotelManegement.dir/TripleRoom.cpp.obj	93016c3dd3575f3b
+10	768	7502675002970926	CMakeFiles/HotelManegement.dir/Date.cpp.obj	afadd035b91f6c0
+59	755	7501044165047874	CMakeFiles/HotelManegement.dir/RoomList.cpp.obj	db4d2cb3ae2b935d
+76	988	7502669334116691	CMakeFiles/HotelManegement.dir/SingleRoom.cpp.obj	c68ccba6ab776640
+44	1053	7502669334766702	CMakeFiles/HotelManegement.dir/GuestList.cpp.obj	a00eecdf240f1cc1
+65	1119	7502669335436700	CMakeFiles/HotelManegement.dir/DoubleRoom.cpp.obj	e0dd3d05d82e8629
+6	305	7502893650782603	build.ninja	ed46803b5d5551ca
+3	813	7502894032587933	CMakeFiles/HotelManegement.dir/main.cpp.obj	80736e70edcca289
+8	911	7502894033558481	CMakeFiles/HotelManegement.dir/Reservation.cpp.obj	b9fdea30dc0eea9a
+12	969	7502894034129293	CMakeFiles/HotelManegement.dir/Date.cpp.obj	afadd035b91f6c0
+969	1175	7502894036154926	HotelManegement.exe	9ccbeda5208624
