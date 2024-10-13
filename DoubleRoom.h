@@ -5,7 +5,6 @@
 #include <list>
 #include "Room.h"
 #include "Guest.h"
-
 using namespace std;
 
 class DoubleRoom : public Room {
@@ -15,7 +14,8 @@ private:
 
 public:
     DoubleRoom();
-    DoubleRoom(int maxOccupancy, list<Guest> guests, int newIdRoom, bool newIsOccupied, double newPricePerNight, int currentOccupancy);
+    DoubleRoom(list<Guest> guests, int newIdRoom, bool newIsOccupied, double newPricePerNight, int currentOccupancy);
+    DoubleRoom(int newIdRoom, bool newIsOccupied,double newPricePerNight, int newCurrentOccupancy);
     DoubleRoom(const DoubleRoom& other);
     DoubleRoom(DoubleRoom&& other) noexcept;
     friend ostream& operator<<(ostream& os, const DoubleRoom& room);
@@ -24,6 +24,9 @@ public:
 
     void printGuests() override;
     void writeToFile () override;
+    void addToFile () override;
+
+    void addGuest(Guest &guest);
 
     DoubleRoom& operator=(const DoubleRoom& other);
     DoubleRoom& operator=(DoubleRoom&& other) noexcept;

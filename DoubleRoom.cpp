@@ -3,8 +3,11 @@
 // Constructors
 DoubleRoom::DoubleRoom() : Room(), maxOccupancy(2), guests() {}
 
-DoubleRoom::DoubleRoom(int maxOccupancy, list<Guest> guests, int newIdRoom, bool newIsOccupied, double newPricePerNight, int currentOccupancy)
-        : Room(newIdRoom, newIsOccupied, newPricePerNight, currentOccupancy), maxOccupancy(maxOccupancy), guests(std::move(guests)) {}
+DoubleRoom::DoubleRoom(list<Guest> guests, int newIdRoom, bool newIsOccupied, double newPricePerNight, int currentOccupancy)
+        : Room(newIdRoom, newIsOccupied, newPricePerNight, currentOccupancy), guests(std::move(guests)) {}
+
+DoubleRoom::DoubleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight, int newCurrentOccupancy)
+            : Room(newIdRoom, newIsOccupied, newPricePerNight,newCurrentOccupancy) {}
 
 DoubleRoom::DoubleRoom(const DoubleRoom& other)
         : Room(other), maxOccupancy(other.maxOccupancy), guests(other.guests) {}
@@ -14,7 +17,11 @@ DoubleRoom::DoubleRoom(DoubleRoom&& other) noexcept
     other.maxOccupancy = 0;
 }
 
-DoubleRoom::~DoubleRoom() {}
+DoubleRoom::~DoubleRoom() {
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Log.txt)", ios_base::app);
+    fout << "Destructor from Double Room ";
+    fout.close();
+}
 
 istream &operator>>(istream& is, DoubleRoom& obj){
     is>>static_cast<Room&>(obj);
@@ -92,6 +99,7 @@ void DoubleRoom::setGuests(const list<Guest>& newGuests) {
 void DoubleRoom::addGuest(const Guest& guest) {
     if (guests.size() < maxOccupancy) {
         guests.push_back(guest);
+        this->setCurrentOccupancy(getCurrentOccupancy() + 1);
     } else {
         cout << "Room is full!" << endl;
     }
@@ -106,11 +114,19 @@ void DoubleRoom::printGuests() {
 
 void DoubleRoom::writeToFile() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\DoubleRooms.txt)", ios_base::app);
-    fout << getIdRoom() << "\t" << getIsOccupied() << "\t" << getPricePerNight() << "\t" << getMaxOccupancy()<< endl;
+    fout << getIdRoom() << "\t" << getIsOccupied() << "\t" << getPricePerNight() << "\t" << getMaxOccupancy()<< "\t";
+    for(Guest &guest : guests){
+        fout << guest << "\t";
+    }
+    fout << endl;
     fout.close();
 }
-
-
+void DoubleRoom::addToFile() {
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedDoubleR.txt)", ios_base::app);
+    fout << getIdRoom() << "\t" << getIsOccupied() << "\t" << getPricePerNight() << "\t" << getCurrentOccupancy()<<endl;
+    fout.close();
+    cout<< "Double room was added to file"<<endl;
+}
 
 
 

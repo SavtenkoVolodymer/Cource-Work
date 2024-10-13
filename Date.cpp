@@ -2,7 +2,9 @@
 #include "fstream"
 // Constructors
 Date::~Date() {
-
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Log.txt)", ios_base::app);
+    fout << "Year: "<< *year << " Month: " << *month<< " Day: "<< *day<<endl;
+    fout.close();
 }
 
 Date::Date() : year(std::make_unique<int>(1900)), month(std::make_unique<int>(1)), day(std::make_unique<int>(1)) {}
@@ -28,9 +30,6 @@ ifstream& operator>>(ifstream& is, Date& date){
     return is;
 }
 
-//string Date::getDate() {
-//    return std::to_string(year)
-//}
 
 Date& Date::operator=(const Date& date) {
     if (this != &date) {
@@ -134,8 +133,33 @@ std::string Date::getDate() const {
     std::string g_year = std::to_string(*year);
     std::string g_month = (*month < 10)? ( '0' + std::to_string(*month)):std::to_string(*month);
     std::string g_day = (*day < 10)? ( '0' + std::to_string(*day)):std::to_string(*day);
-    std::string date = g_year + '-' + g_month + '-' + g_day;
+    std::string date = g_year + ' ' + g_month + ' ' + g_day;
     return date;
+}
+
+int Date::getYear() const {
+    return *year;
+}
+
+int Date::getMonth() const {
+    return *month;
+}
+
+int Date::getDay() const {
+    return *day;
+}
+
+// Сеттери
+void Date::setYear(int newYear) {
+    year = make_unique<int>(newYear);
+}
+
+void Date::setMonth(int newMonth) {
+    month = make_unique<int>(newMonth);
+}
+
+void Date::setDay(int newDay) {
+    day = make_unique<int>(newDay);
 }
 // Operators !=, == , > , <
 bool Date::operator!=(const Date& rhs) const {

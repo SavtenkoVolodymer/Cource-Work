@@ -4,8 +4,11 @@
 //Constructors
 TripleRoom::TripleRoom() : Room(), maxOccupancy(3) {}
 
-TripleRoom::TripleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight, const list<Guest>& newGuests)
-        : Room(newIdRoom, newIsOccupied, newPricePerNight , 3), guests(newGuests) {}
+TripleRoom::TripleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight, const list<Guest>& newGuests,int newCurrentOccupancy)
+        : Room(newIdRoom, newIsOccupied, newPricePerNight , newCurrentOccupancy), guests(newGuests){}
+
+TripleRoom::TripleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight, int newCurrentOccupancy)
+        : Room(newIdRoom, newIsOccupied, newPricePerNight,newCurrentOccupancy) {}
 
 TripleRoom::TripleRoom(const TripleRoom& other)
         : Room(other), maxOccupancy(other.maxOccupancy), guests(other.guests) {}
@@ -13,7 +16,10 @@ TripleRoom::TripleRoom(const TripleRoom& other)
 TripleRoom::TripleRoom(TripleRoom&& other) noexcept
         : Room(std::move(other)), maxOccupancy(other.maxOccupancy), guests(std::move(other.guests)) {}
 
-TripleRoom::~TripleRoom() {}
+TripleRoom::~TripleRoom() {
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Log.txt)", ios_base::app);
+    fout << " Destructor from Triple Room "<<endl;
+}
 
 istream &operator>>(istream& is, TripleRoom& obj){
     is>>static_cast<Room&>(obj);
@@ -81,13 +87,15 @@ void TripleRoom::setGuests(const list<Guest>& newGuests) {
     guests = newGuests;
 }
 // Functions
-void TripleRoom::addGuest(const Guest& guest) {
+void TripleRoom::addGuest( const Guest& guest) {
     if (guests.size() < maxOccupancy) {
         guests.push_back(guest);
+        this->setCurrentOccupancy(getCurrentOccupancy() + 1);
     } else {
-        cout << "Cannot add guest: Maximum occupancy reached." << endl;
+        cout << "Room is full!" << endl;
     }
 }
+
 
 void TripleRoom::printGuests() {
     for(const Guest& guest: guests){
@@ -97,8 +105,16 @@ void TripleRoom::printGuests() {
 
 void TripleRoom::writeToFile() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\TripleRooms.txt)", ios_base::app);
-    fout << getIdRoom() << "\t" << getIsOccupied() << "\t" << getPricePerNight() << "\t" << getMaxOccupancy()<< endl;
+    fout << getIdRoom() << "\t" << getIsOccupied() << "\t" << getPricePerNight() << "\t" << getMaxOccupancy()<< "\t";
+    for(Guest &guest : guests){
+        fout << guest << "\t";
+    }
+    fout << endl;
     fout.close();
 }
-
-
+void TripleRoom::addToFile() {
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedTripleR.txt)", ios_base::app);
+    fout << getIdRoom() << "\t" << getIsOccupied() << "\t" << getPricePerNight() << "\t" << getCurrentOccupancy()<<endl;
+    fout.close();
+    cout<< "Triple room was added to file"<<endl;
+}

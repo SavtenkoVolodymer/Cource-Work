@@ -22,10 +22,17 @@ public:
     Date& operator=(const Date& date);
     Date& operator=(Date&& date) noexcept;
 
-    string getDate();
     Date(const Date &date);
     Date(Date &&date) noexcept ;
 
+    [[nodiscard]] int getYear() const;
+    [[nodiscard]] int getMonth() const;
+    [[nodiscard]] int getDay() const;
+
+
+    void setYear(int newYear);
+    void setMonth(int newMonth);
+    void setDay(int newDay);
     void setCurrentDate();
     void setYesterdayDay();
     void setDate();

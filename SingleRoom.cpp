@@ -1,14 +1,14 @@
 #include "SingleRoom.h"
 #include "fstream"
 
-
-
-
 // Constructors
 SingleRoom::SingleRoom() : Room(), guest() {}
 
-SingleRoom::SingleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight, Guest  newGuest)
-        : Room(newIdRoom, newIsOccupied, newPricePerNight, 1), guest(std::move((newGuest))) {}
+SingleRoom::SingleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight, Guest  &newGuest)
+        : Room(newIdRoom, newIsOccupied, newPricePerNight, 1), guest(newGuest) {}
+
+SingleRoom::SingleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight , int newCurrentOccupancy)
+        : Room(newIdRoom, newIsOccupied, newPricePerNight, newCurrentOccupancy) {}
 
 SingleRoom::SingleRoom(const SingleRoom& other)
         : Room(other), maxOccupancy(other.maxOccupancy), guest(other.guest) {}
@@ -18,7 +18,10 @@ SingleRoom::SingleRoom(SingleRoom&& other) noexcept
     other.maxOccupancy = 0;
 }
 
-SingleRoom::~SingleRoom() {}
+SingleRoom::~SingleRoom() {
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Log.txt)", ios_base::app);
+    fout << " Destructor from Single Room "<<endl;
+}
 
 istream &operator>>(istream& is, SingleRoom& obj){
     is>>static_cast<Room&>(obj);
@@ -92,7 +95,13 @@ void SingleRoom::printGuests() {
 
 void SingleRoom::writeToFile() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\SingleRooms.txt)", ios_base::app);
-    fout << getIdRoom() << "\t" << getIsOccupied() << "\t" << getPricePerNight() << "\t" << getMaxOccupancy()<< endl;
+    fout << getIdRoom() << "\t" << getIsOccupied() << "\t" << getPricePerNight() << "\t" << getMaxOccupancy()<<"\t"<<guest<< endl;
     fout.close();
+}
+void SingleRoom::addToFile() {
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedSingleR.txt)", ios_base::app);
+    fout << getIdRoom() << "\t" << getIsOccupied() << "\t" << getPricePerNight() << "\t" << getCurrentOccupancy()<<endl;
+    fout.close();
+    cout<< "Single room was added to file"<<endl;
 }
 

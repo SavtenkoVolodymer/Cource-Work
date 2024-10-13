@@ -1,11 +1,14 @@
 #include "Guest.h"
 #include "fstream"
+#include "SingleRoom.h"
+#include "DoubleRoom.h"
+#include "TripleRoom.h"
 
 // Constructors
 Guest::Guest() : name(""), idGuest(0), year(0), surname("") {}
 
-Guest::Guest(string newName, int newIdGuest, int newYear, string newSurname)
-        : name(std::move(newName)), idGuest(newIdGuest), year(newYear), surname(std::move(newSurname)) {}
+Guest::Guest(string &newName, int newIdGuest, int newYear, string &newSurname)
+        : name(newName), idGuest(newIdGuest), year(newYear), surname(newSurname) {}
 
 Guest::Guest(const Guest& guest)
         : name(guest.name), idGuest(guest.idGuest), year(guest.year), surname(guest.surname) {}
@@ -17,12 +20,12 @@ Guest::Guest(Guest&& guest) noexcept
 }
 
 istream& operator>>(istream& is, Guest& guest) {
-    is >> guest.name >> guest.idGuest >> guest.year >> guest.surname;
+    is >> guest.idGuest>> guest.name >> guest.surname >> guest.year;
     return is;
 }
 
 ostream& operator<<(ostream& os, const Guest& guest) {
-    os << "Guest ID: " << guest.idGuest << ", Name: " << guest.name << ", Surname: " << guest.surname << ", Year: " << guest.year;
+    os << guest.idGuest << "\t" << guest.name << "\t" << guest.surname<< "\t"<< "\t"<<guest.year;
     return os;
 }
 
@@ -49,7 +52,11 @@ Guest& Guest::operator=(Guest&& other) noexcept {
     return *this;
 }
 
-Guest::~Guest() {}
+Guest::~Guest() {
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Log.txt)", ios_base::app);
+    fout << "Name: "<< name << " Surname: " << surname << endl;
+    fout.close();
+}
 
 // Operators == , !- , >, <
 bool Guest::operator==(const Guest& other) const {
@@ -120,9 +127,88 @@ bool Guest::sortByLowYear(int newYear) const {
     return year<= newYear;
 }
 
+bool Guest::sortBySurname(const std::string &newSurname) const {
+    return name == newSurname;
+}
+
+//Functions
+Reservation Guest::reservationFromFile() const {
+    ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)");
+    Reservation reservation;
+    while(fin >> reservation ){
+        if(reservation.getGuest() == this->getName()){
+            return reservation;
+        }
+    }
+    fin.close();
+    return {};
+}
+
+
+void Guest::addReservation() const {
+    cout << "Enter check in date: " << endl;
+    unique_ptr <int> year1 = make_unique <int> (getInput<int>("Enter check in year: " ));
+
+    unique_ptr <int> month1 = make_unique <int> (getInput<int>("Enter check in month: "));
+
+    unique_ptr <int> day1 = make_unique <int> (getInput<int>("Enter check in day: "));
+
+    Date date1(*year1, *month1, *day1);
+
+    cout << "Enter check out date: " << endl;
+    unique_ptr <int> year2 = make_unique <int> (getInput<int>("Enter check out year: " ));
+
+    unique_ptr <int> month2 = make_unique <int> (getInput<int>("Enter check out month: "));
+
+    unique_ptr <int> day2 = make_unique <int> (getInput<int>("Enter check out day: "));
+
+    unique_ptr <int> room = make_unique <int> (getInput<int>("Enter number of room: "));
+    Date date2(*year2, *month2, *day2);
+    try {
+        if (ifExist(*room)) {
+            Reservation reservation(name, date1, date2, *room);
+            reservation.writeToFile();
+        } else {
+            throw runtime_error("This id of room does not exist!!");
+        }
+    }catch (exception &e){
+        cerr << e.what() << endl;
+    }
+}
+
 void Guest::writeToFile() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Guests.txt)", ios_base::app);
-    fout << name << "\t" << surname << "\t" << idGuest << "\t"<< year << endl;
+    fout << idGuest << "\t" << name << "\t" << surname << "\t"<< year << endl;
     fout.close();
 }
 
+
+bool Guest::ifExist(int idRoom) {
+    ifstream fin1(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedSingleR.txt)");
+    SingleRoom room1;
+    while (fin1 >> room1) {
+        if (room1.getIdRoom() == idRoom) {
+            return true;
+        }
+    }
+    fin1.close();
+
+    ifstream fin2(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedDoubleR.txt)");
+    DoubleRoom room2;
+    while (fin2 >> room2) {
+        if (room2.getIdRoom() == idRoom) {
+            return true;
+        }
+    }
+    fin2.close();
+
+    ifstream fin3(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedTripleR.txt)");
+    TripleRoom room3;
+    while (fin3 >> room3) {
+        if (room3.getIdRoom() == idRoom) {
+            return true;
+        }
+    }
+    fin3.close();
+    return false;
+}

@@ -4,7 +4,6 @@
 #include <iostream>
 #include "Room.h"
 #include "Guest.h"
-
 using namespace std;
 
 class SingleRoom : public Room {
@@ -14,7 +13,8 @@ private:
 
 public:
     SingleRoom();
-    SingleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight, Guest  guest);
+    SingleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight, Guest  &guest);
+    SingleRoom(int newIdRoom, bool newIsOccupied,double newPricePerNight, int currentOccupancy);
     SingleRoom(const SingleRoom& other);
     SingleRoom(SingleRoom&& other) noexcept;
     friend ostream& operator<<(ostream& os, const SingleRoom& room);
@@ -23,6 +23,7 @@ public:
 
     void printGuests() override;
     void writeToFile () override;
+    void addToFile () override;
 
     SingleRoom& operator=(const SingleRoom& other);
     SingleRoom& operator=(SingleRoom&& other) noexcept;

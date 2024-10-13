@@ -5,7 +5,6 @@
 #include <list>
 #include "Room.h"
 #include "Guest.h"
-
 using namespace std;
 
 class TripleRoom : public Room {
@@ -15,7 +14,8 @@ private:
 
 public:
     TripleRoom();
-    TripleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight, const list<Guest>& newGuests);
+    TripleRoom(int newIdRoom, bool newIsOccupied, double newPricePerNight, const list<Guest>& newGuests,int currentOccupancy);
+    TripleRoom(int newIdRoom, bool newIsOccupied,double newPricePerNight, int newCurrentOccupancy);
     TripleRoom(const TripleRoom& other);
     TripleRoom(TripleRoom&& other) noexcept;
     friend ostream& operator<<(ostream& os, const TripleRoom& room);
@@ -24,6 +24,9 @@ public:
 
     void printGuests() override;
     void writeToFile () override;
+    void addToFile () override;
+
+    void addGuest(const Guest &guest);
 
     TripleRoom& operator=(const TripleRoom& other);
     TripleRoom& operator=(TripleRoom&& other) noexcept;
@@ -39,7 +42,7 @@ public:
     void setMaxOccupancy(int newMaxOccupancy);
     void setGuests(const list<Guest>& newGuests);
 
-    void addGuest(const Guest& guest);
+
 };
 
 #endif //HOTELMANEGEMENT_TRIPLEROOM_H

@@ -1,5 +1,7 @@
 #include "Reservation.h"
-
+#include "SingleRoom.h"
+#include "DoubleRoom.h"
+#include "TripleRoom.h"
 #include <utility>
 #include "fstream"
 #include "istream"
@@ -7,8 +9,8 @@
 // Constructors
 Reservation::Reservation() : guest(""), check_in(Date()), check_out(Date()), room(nullptr) {}
 
-Reservation::Reservation(string newGuest, Date  newCheckIn, Date  newCheckOut, int newRoom)
-        : guest(std::move(newGuest)), check_in(std::move(newCheckIn)), check_out(std::move(newCheckOut)), room(make_unique<int>(newRoom)) {}
+Reservation::Reservation(string newGuest, Date & newCheckIn, Date & newCheckOut, int newRoom)
+        : guest(newGuest), check_in(newCheckIn), check_out(newCheckOut), room(make_unique<int>(newRoom)) {}
 
 Reservation::Reservation(const Reservation& reservation)
         : guest(reservation.guest),
@@ -22,7 +24,11 @@ Reservation::Reservation(Reservation&& reservation) noexcept
           check_out(std::move(reservation.check_out)),
           room(std::move(reservation.room)) {}
 
-Reservation::~Reservation() {}
+Reservation::~Reservation() {
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Log.txt)", ios_base::app);
+    fout << "Guest: "<< guest << " Room: " << *room << endl;
+    fout.close();
+}
 
 // Operator =
 Reservation& Reservation::operator=(const Reservation& reservation) {
@@ -79,11 +85,11 @@ string Reservation::getGuest() const {
     return guest;
 }
 
-const Date& Reservation::getCheckIn() const {
+const Date Reservation::getCheckIn() const {
     return check_in;
 }
 
-const Date& Reservation::getCheckOut() const {
+const Date Reservation::getCheckOut() const {
     return check_out;
 }
 
@@ -110,25 +116,89 @@ void Reservation::setRoom(int newRoom) {
 istream &operator>>(istream& is, Reservation& reservation){
 
    is >> reservation.guest ;
-
    int year, month, day;
    is >> year >> month >> day;
+   Date checkIn (year , month ,day);
+   reservation.setCheckIn(checkIn);
    is >> year >> month >> day;
-   is >> *reservation.room;
+   Date checkOut (year , month ,day);
+    reservation.setCheckOut(checkOut);
+//       is >> *reservation.room;
+   is >> day ;
+   reservation.setRoom(day);
+   cout << reservation.getGuest();
+   cout << reservation.getCheckIn().getDate();
+   cout << reservation.getCheckOut().getDate();
+   cout << reservation.getRoom();
 
    return is;
 }
+//istream& operator>>(istream& is, Reservation& reservation) {
+//    is >> reservation.guest;
+//    int year, month, day;
+//    is >> year >> month >> day;
+//    Date checkIn(year, month, day);
+//    reservation.setCheckIn(checkIn);
+//
+//    is >> year >> month >> day;
+//    Date checkOut(year, month, day);
+//    reservation.setCheckOut(checkOut);
+//
+//    if (!reservation.room) {
+//        reservation.room = make_unique<int>();
+//    }
+//
+//    is >> *reservation.room;
+//
+//    return is;
+//}
 
 
 ostream &operator << (ostream& os, const Reservation& reservation) {
-    os << reservation.guest << "\t" << &reservation.check_in << "\t"<< &reservation.check_out << "\t"
-       << &reservation.room;
+    os << reservation.guest << "\t" << reservation.getCheckIn().getDate()<< "\t"<<reservation.getCheckOut().getDate() << "\t"
+       << *reservation.room;
     return os;
 }
 
+
 void Reservation::writeToFile() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)", ios_base::app);
-    fout << guest << "\t" << &check_in << "\t" << &check_out << "\t" << *room<< endl;
+    fout << guest << "\t" << check_in.getDate() << "\t" << check_out.getDate() << "\t" << *room<< endl;
     fout.close();
 }
 
+double Reservation::getPrice() {
+    double buff = check_out.getDay()-check_in.getDay();
+    return buff * this->getPriceFromFile();
+}
+
+
+double Reservation::getPriceFromFile() const {
+    ifstream fin1(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedSingleR.txt)");
+    SingleRoom room1;
+    while (fin1 >> room1) {
+        if (room1.getIdRoom() == this->getRoom()) {
+            return room1.getPricePerNight();
+        }
+    }
+    fin1.close();
+
+    ifstream fin2(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedDoubleR.txt)");
+    DoubleRoom room2;
+    while (fin2 >> room2) {
+        if (room2.getIdRoom() == this->getRoom()) {
+            return room2.getPricePerNight();
+        }
+    }
+    fin2.close();
+
+    ifstream fin3(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedTripleR.txt)");
+    TripleRoom room3;
+    while (fin3 >> room3) {
+        if (room3.getIdRoom() == this->getRoom()) {
+            return room3.getPricePerNight();
+        }
+    }
+    fin3.close();
+    return 0;
+}

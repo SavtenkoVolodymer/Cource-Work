@@ -1,4 +1,5 @@
 #include "GuestList.h"
+#include "fstream"
 
 // Constructors
 GuestList::GuestList(const GuestList& other) {
@@ -22,6 +23,14 @@ GuestList& GuestList::operator=(GuestList&& other) noexcept {
         guests = std::move(other.guests);
     }
     return *this;
+}
+
+ostream& operator<<(ostream& os, const GuestList& guestList) {
+    os << "Guest List: \n";
+    for (const auto &guest: guestList.guests) {
+        os << guest << "\n";
+    }
+    return os;
 }
 
 // Operators == , != , < , >
@@ -63,10 +72,18 @@ size_t GuestList::getGuestCount() const {
     return guests.size();
 }
 
-ostream& operator<<(ostream& os, const GuestList& guestList) {
-    os << "Guest List: \n";
-    for (const auto &guest: guestList.guests) {
-        os << guest << "\n";
+void GuestList::guestsFromFile() {
+    ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Guests.txt)");
+    Guest guest;
+    while(fin >> guest){
+        this->addGuest(guest);
     }
-    return os;
+    fin.close();
+}
+
+void GuestList::printGuests() {
+    this->guestsFromFile();
+    for(Guest &guest : guests){
+        cout << guest << endl;
+    }
 }

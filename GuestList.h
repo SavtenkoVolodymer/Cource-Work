@@ -25,9 +25,16 @@ public:
     bool operator<(const GuestList& other) const;
     bool operator>(const GuestList& other) const;
 
+    void printGuests();
     void addGuest(const Guest& guest);
     void removeGuest(const Guest& guest);
     [[nodiscard]] size_t getGuestCount() const;
+    void guestsFromFile();
+
+//    list <Guest> sortByName();
+//    list <Guest> sortByHigherYear();
+//    list <Guest> sortByLowYear();
+//    list <Guest> sortBySurname();
 
     [[nodiscard]] const list<Guest>& getGuests() const;
     void setGuests(const list<Guest>& newGuests);

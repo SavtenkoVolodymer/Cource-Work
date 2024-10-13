@@ -24,6 +24,7 @@ public:
 
     virtual void printGuests() = 0;
     virtual void writeToFile() = 0;
+    virtual void addToFile () = 0;
 
     bool operator==(const Room& other) const;
     bool operator!=(const Room& other) const;
@@ -33,10 +34,12 @@ public:
     [[nodiscard]] int getIdRoom() const;
     [[nodiscard]] bool getIsOccupied() const;
     [[nodiscard]] double getPricePerNight() const;
+    [[nodiscard]] int getCurrentOccupancy() const;
 
     void setIdRoom(int _idRoom);
     void setIsOccupied(bool _isOccupied);
     void setPricePerNight(double _price);
+    void setCurrentOccupancy(int _currentOccupancy);
 };
 
 #endif //HOTELMANEGEMENT_ROOM_H

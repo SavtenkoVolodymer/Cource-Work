@@ -15,7 +15,7 @@ private:
 
 public:
     Reservation();
-    Reservation(string newGuest, Date  newCheckIn, Date  newCheckOut, int newRoom);
+    Reservation(string newGuest, Date  &newCheckIn, Date  &newCheckOut, int newRoom);
     Reservation(const Reservation& reservation);
     Reservation(Reservation&& reservation) noexcept;
     friend ostream& operator<<(ostream& os, const Reservation& reservation);
@@ -23,8 +23,8 @@ public:
     ~Reservation();
 
     void writeToFile();
-
-
+    double getPrice();
+    [[nodiscard]] double getPriceFromFile() const;
 
     Reservation& operator=(const Reservation& reservation);
     Reservation& operator=(Reservation&& reservation) noexcept;
@@ -36,8 +36,8 @@ public:
 
 
     [[nodiscard]] string getGuest() const;
-    [[nodiscard]] const Date& getCheckIn() const;
-    [[nodiscard]] const Date& getCheckOut() const;
+    [[nodiscard]] const Date getCheckIn() const;
+    [[nodiscard]] const Date getCheckOut() const;
     [[nodiscard]] int getRoom() const;
 
     void setGuest(const string& newGuest);

@@ -19,7 +19,11 @@ Room::Room(Room&& room) noexcept
     room.currentOccupancy = 0;
 }
 
-Room::~Room() {}
+Room::~Room() {
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Log.txt)", ios_base::app);
+    fout << "Room: "<< idRoom << " Price per night: "<< pricePerNight<<" ";
+    fout.close();
+}
 
 istream& operator>>(istream& is, Room& room) {
     is >> room.idRoom >> room.isOccupied >> room.pricePerNight >> room.currentOccupancy;
@@ -44,6 +48,10 @@ double Room::getPricePerNight() const {
     return pricePerNight;
 }
 
+int Room::getCurrentOccupancy() const {
+    return currentOccupancy;
+}
+
 void Room::setIdRoom(int _idRoom) {
     idRoom = _idRoom;
 }
@@ -54,6 +62,9 @@ void Room::setIsOccupied(bool _isOccupied) {
 
 void Room::setPricePerNight(double _price) {
     pricePerNight = _price;
+}
+void Room::setCurrentOccupancy(int _currentOccupancy) {
+    currentOccupancy = _currentOccupancy;
 }
 // Operator =
 Room& Room::operator=(const Room& other) {
