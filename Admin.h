@@ -3,12 +3,14 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 #include "SingleRoom.h"
 #include "DoubleRoom.h"
 #include "TripleRoom.h"
+#include "Person.h"
 using namespace std;
 
-class Admin {
+class Admin : public Person {
 private:
     string login;
     string password;
@@ -20,10 +22,14 @@ public:
     Admin(Admin&& admin) noexcept;
     friend ostream& operator<<(ostream& os, const Admin& admin);
     friend istream& operator>>(istream& is, Admin& admin);
-    virtual ~Admin();
+    ~Admin() override;
 
     static void addRoom();
-    void writeToFile();
+    void writeToFile() override;
+    static bool ifExist(int idRoom);
+    void removeReservationById(int idGuest, list<Reservation>& reservations);
+//    void checkAvailableRooms(const Date& checkIn, const Date& checkOut, const list<Reservation>& reservations) const;
+
 
     template <typename T>
     static T getInput(const string& prompt) {

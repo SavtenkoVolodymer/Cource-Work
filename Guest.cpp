@@ -132,49 +132,47 @@ bool Guest::sortBySurname(const std::string &newSurname) const {
 }
 
 //Functions
-Reservation Guest::reservationFromFile() const {
-    ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)");
-    Reservation reservation;
-    while(fin >> reservation ){
-        if(reservation.getGuest() == this->getName()){
-            return reservation;
-        }
-    }
-    fin.close();
-    return {};
-}
 
+//unique_ptr<Room> Guest::getRoomFromFile(int idRoom) {
+//    ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedSingleR.txt)");
+//    unique_ptr<Room> room = make_unique<Room>(Room ());
+//    while(fin >> *room){
+//        if(room->getIdRoom()== idRoom)
+//            return room;
+//    }
+//    fin.close();
+//}
 
-void Guest::addReservation() const {
-    cout << "Enter check in date: " << endl;
-    unique_ptr <int> year1 = make_unique <int> (getInput<int>("Enter check in year: " ));
-
-    unique_ptr <int> month1 = make_unique <int> (getInput<int>("Enter check in month: "));
-
-    unique_ptr <int> day1 = make_unique <int> (getInput<int>("Enter check in day: "));
-
-    Date date1(*year1, *month1, *day1);
-
-    cout << "Enter check out date: " << endl;
-    unique_ptr <int> year2 = make_unique <int> (getInput<int>("Enter check out year: " ));
-
-    unique_ptr <int> month2 = make_unique <int> (getInput<int>("Enter check out month: "));
-
-    unique_ptr <int> day2 = make_unique <int> (getInput<int>("Enter check out day: "));
-
-    unique_ptr <int> room = make_unique <int> (getInput<int>("Enter number of room: "));
-    Date date2(*year2, *month2, *day2);
-    try {
-        if (ifExist(*room)) {
-            Reservation reservation(name, date1, date2, *room);
-            reservation.writeToFile();
-        } else {
-            throw runtime_error("This id of room does not exist!!");
-        }
-    }catch (exception &e){
-        cerr << e.what() << endl;
-    }
-}
+//void Guest::addReservation() const {
+//    cout << "Enter check in date: " << endl;
+//    unique_ptr <int> year1 = make_unique <int> (getInput<int>("Enter check in year: " ));
+//
+//    unique_ptr <int> month1 = make_unique <int> (getInput<int>("Enter check in month: "));
+//
+//    unique_ptr <int> day1 = make_unique <int> (getInput<int>("Enter check in day: "));
+//
+//    Date date1(*year1, *month1, *day1);
+//
+//    cout << "Enter check out date: " << endl;
+//    unique_ptr <int> year2 = make_unique <int> (getInput<int>("Enter check out year: " ));
+//
+//    unique_ptr <int> month2 = make_unique <int> (getInput<int>("Enter check out month: "));
+//
+//    unique_ptr <int> day2 = make_unique <int> (getInput<int>("Enter check out day: "));
+//
+//    unique_ptr <int> room = make_unique <int> (getInput<int>("Enter number of room: "));
+//    Date date2(*year2, *month2, *day2);
+//    try {
+//        if (ifExist(*room)) {
+//            Reservation reservation(this, date1, date2, Guest::getRoomFromFile(2));
+//            reservation.writeToFile();
+//        } else {
+//            throw runtime_error("This id of room does not exist!!");
+//        }
+//    }catch (exception &e){
+//        cerr << e.what() << endl;
+//    }
+//}
 
 void Guest::writeToFile() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Guests.txt)", ios_base::app);
@@ -211,4 +209,22 @@ bool Guest::ifExist(int idRoom) {
     }
     fin3.close();
     return false;
+}
+
+void Guest::viewReservations(const list<Reservation>& reservations) const {
+    cout << "Reservations for guest: " << name << " (ID: " << idGuest << ")" << endl;
+    bool found = false;
+
+    for (const auto& res : reservations) {
+        if (res.getGuest().getIdGuest() == idGuest) {
+            cout << "Reservation from " << res.getCheckIn().getDate()
+                 << " to " << res.getCheckOut().getDate()
+                 << " in Room " << res.getRoom().getIdRoom() << endl;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        cout << "No reservations found for this guest." << endl;
+    }
 }

@@ -22,9 +22,9 @@ public:
     Room& operator=(const Room& other);
     Room& operator=(Room&& other) noexcept;
 
-    virtual void printGuests() = 0;
-    virtual void writeToFile() = 0;
-    virtual void addToFile () = 0;
+    void printGuests();
+    void writeToFile();
+    void addToFile ();
 
     bool operator==(const Room& other) const;
     bool operator!=(const Room& other) const;

@@ -7,7 +7,7 @@
 #include "Guest.h"
 using namespace std;
 
-class TripleRoom : public Room {
+class TripleRoom : public Room{
 private:
     int maxOccupancy = 3;
     list<Guest> guests;
@@ -20,11 +20,11 @@ public:
     TripleRoom(TripleRoom&& other) noexcept;
     friend ostream& operator<<(ostream& os, const TripleRoom& room);
     friend istream& operator>>(istream& is, TripleRoom& room);
-    ~TripleRoom() override;
+    ~TripleRoom();
 
-    void printGuests() override;
-    void writeToFile () override;
-    void addToFile () override;
+    void printGuests();
+    void writeToFile ();
+    void addToFile ();
 
     void addGuest(const Guest &guest);
 

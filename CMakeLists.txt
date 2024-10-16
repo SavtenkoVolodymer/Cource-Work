@@ -24,4 +24,6 @@ add_executable(HotelManegement main.cpp
         TripleRoom.h
         RoomList.cpp
         RoomList.h
+        Person.cpp
+        Person.h
 )

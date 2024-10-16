@@ -6,7 +6,7 @@
 #include "Guest.h"
 using namespace std;
 
-class SingleRoom : public Room {
+class SingleRoom : public Room{
 private:
     int maxOccupancy = 1;
     Guest guest;
@@ -19,11 +19,11 @@ public:
     SingleRoom(SingleRoom&& other) noexcept;
     friend ostream& operator<<(ostream& os, const SingleRoom& room);
     friend istream& operator>>(istream& is, SingleRoom& room);
-    ~SingleRoom() override;
+    ~SingleRoom();
 
-    void printGuests() override;
-    void writeToFile () override;
-    void addToFile () override;
+    void printGuests();
+    void writeToFile ();
+    void addToFile ();
 
     SingleRoom& operator=(const SingleRoom& other);
     SingleRoom& operator=(SingleRoom&& other) noexcept;

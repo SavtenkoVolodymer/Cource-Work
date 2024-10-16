@@ -15,7 +15,7 @@ int main() {
 
     string name = "Vova";
     string surname = "Savtenko";
-    Guest guest(name,2,2000,surname);
+//    Guest guest(name,2,2000,surname);
 //    string name1 = "Vova";
 //    string surname1 = "Savtenko";
 //    Guest guest1(name,2,2000,surname);
@@ -49,8 +49,17 @@ int main() {
 //    cout << reservation1.getCheckOut().getDate()<< endl;
 //    cout << reservation1.getRoom();
 
-    Reservation reservation (name,date , date , 1);
-    cout<< reservation << endl;
-    cout << reservation.getPriceFromFile();
+//    Reservation reservation (name,date , date , 1);
+//    cout<< reservation << endl;
+//    cout << reservation.getPriceFromFile();
+//    cout << *guest.getRoomFromFile(1);
+
+//    Guest guest(name, 1, 1990, surname);
+//    list<Reservation> reservations = {
+//            Reservation(name, Date(2024, 1, 1), Date(2024, 1, 5), make_unique<SingleRoom>()),
+//            Reservation(name, Date(2024, 2, 10), Date(2024, 2, 15), make_unique<DoubleRoom>())
+//    };
+//
+//    guest.viewReservations(reservations);
     return 0;
 }

@@ -3,9 +3,11 @@
 
 #include <iostream>
 #include "Reservation.h"
+#include "Person.h"
+#include "list"
 using namespace std;
 
-class Guest {
+class Guest : public Person{
 private:
     string name;
     int idGuest;
@@ -19,14 +21,15 @@ public:
     Guest(Guest&& guest) noexcept;
     friend ostream& operator<<(ostream& os, const Guest& guest);
     friend istream& operator>>(istream& is, Guest& guest);
-    ~Guest();
+    ~Guest() override;
     Guest& operator=(const Guest& other);
     Guest& operator=(Guest&& other) noexcept;
 
-    void addReservation() const;
-    void writeToFile();
+    void addReservation() const override;
+    void viewReservations(const list<Reservation>& reservations) const;
+    void writeToFile() override;
     static bool ifExist(int idRoom);
-    Reservation reservationFromFile() const;
+    static unique_ptr<Room> getRoomFromFile(int idRoom);
 
     template <typename T>
     static T getInput(const string& prompt) {

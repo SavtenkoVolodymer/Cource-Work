@@ -143,3 +143,64 @@ void Admin::addRoom() {
     }
 }
 
+bool Admin::ifExist(int idRoom) {
+    ifstream fin1(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedSingleR.txt)");
+    SingleRoom room1;
+    while (fin1 >> room1) {
+        if (room1.getIdRoom() == idRoom) {
+            return true;
+        }
+    }
+    fin1.close();
+
+    ifstream fin2(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedDoubleR.txt)");
+    DoubleRoom room2;
+    while (fin2 >> room2) {
+        if (room2.getIdRoom() == idRoom) {
+            return true;
+        }
+    }
+    fin2.close();
+
+    ifstream fin3(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedTripleR.txt)");
+    TripleRoom room3;
+    while (fin3 >> room3) {
+        if (room3.getIdRoom() == idRoom) {
+            return true;
+        }
+    }
+    fin3.close();
+    return false;
+}
+
+
+void Admin::removeReservationById(int idGuest, list<Reservation>& reservations) {
+
+    for (auto it = reservations.begin(); it != reservations.end(); ) {
+        if (it->getGuest().getIdGuest() == idGuest) {
+            it = reservations.erase(it);
+            cout << "Reservation for guest with ID " << idGuest << " has been removed." << endl;
+        } else {
+            ++it;
+        }
+    }
+}
+
+
+//void Admin::checkAvailableRooms(const Date& checkIn, const Date& checkOut, const list<Reservation>& reservations) const {
+//    cout << "Checking available rooms for the period: " << checkIn.getDate() << " to " << checkOut.getDate() << endl;
+//
+//    bool available = false;
+//
+//    for (const auto& res : reservations) {
+//        // Якщо поточне бронювання не перетинається з новим
+//        if (res.getCheckOut() <= checkIn || res.getCheckIn() >= checkOut) {
+//            cout << "Room " << res.getRoom().getIdRoom() << " is available for the specified period." << endl;
+//            available = true;
+//        }
+//    }
+//
+//    if (!available) {
+//        cout << "No rooms are available for the specified period." << endl;
+//    }
+//}

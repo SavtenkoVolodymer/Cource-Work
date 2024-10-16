@@ -7,7 +7,7 @@
 #include "Guest.h"
 using namespace std;
 
-class DoubleRoom : public Room {
+class DoubleRoom : public Room{
 private:
     int maxOccupancy = 2;
     list<Guest> guests;
@@ -20,13 +20,13 @@ public:
     DoubleRoom(DoubleRoom&& other) noexcept;
     friend ostream& operator<<(ostream& os, const DoubleRoom& room);
     friend istream& operator>>(istream& is, DoubleRoom& room);
-    ~DoubleRoom() override;
+    ~DoubleRoom();
 
-    void printGuests() override;
-    void writeToFile () override;
-    void addToFile () override;
+    void printGuests();
+    void writeToFile ();
+    void addToFile ();
+    void addGuest(const Guest& guest);
 
-    void addGuest(Guest &guest);
 
     DoubleRoom& operator=(const DoubleRoom& other);
     DoubleRoom& operator=(DoubleRoom&& other) noexcept;
@@ -42,7 +42,7 @@ public:
     void setMaxOccupancy(int newMaxOccupancy);
     void setGuests(const list<Guest>& newGuests);
 
-    void addGuest(const Guest& guest);
+
 };
 
 #endif //HOTELMANEGEMENT_DOUBLEROOM_H

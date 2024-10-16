@@ -203,3 +203,36 @@ Year: 2021 Month: 1 Day: 12
 Year: 2021 Month: 1 Day: 12
 Year: 2021 Month: 1 Day: 12
 Name: Vova Surname: Savtenko
+Year: 2021 Month: 1 Day: 12
+Year: 2021 Month: 1 Day: 12
+ Destructor from Single Room 
+Name:  Surname: 
+Room: 1 Price per night: 1000 Guest: Vova Room: 1
+Year: 2021 Month: 1 Day: 12
+Year: 2021 Month: 1 Day: 12
+Year: 2021 Month: 1 Day: 12
+Name: Vova Surname: Savtenko
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
+Year: 2009 Month: 2 Day: 3
