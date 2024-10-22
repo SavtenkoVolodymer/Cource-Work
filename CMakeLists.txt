@@ -16,14 +16,10 @@ add_executable(HotelManegement main.cpp
         Date.h
         GuestList.cpp
         GuestList.h
-        SingleRoom.cpp
-        SingleRoom.h
-        DoubleRoom.cpp
-        DoubleRoom.h
-        TripleRoom.cpp
-        TripleRoom.h
         RoomList.cpp
         RoomList.h
         Person.cpp
         Person.h
+        GuestMenu.cpp
+        GuestMenu.h
 )

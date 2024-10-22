@@ -21,7 +21,7 @@ Room::Room(Room&& room) noexcept
 
 Room::~Room() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Log.txt)", ios_base::app);
-    fout << "Room: "<< idRoom << " Price per night: "<< pricePerNight<<" ";
+    fout << "Destructor from Room"<< endl;
     fout.close();
 }
 
@@ -31,7 +31,7 @@ istream& operator>>(istream& is, Room& room) {
 }
 ostream& operator<<(ostream& out, const Room& n) {
     out << "Room ID: " << n.idRoom << ", Occupied: " << (n.isOccupied ? "Yes" : "No")
-        << ", Price per Night: " << n.pricePerNight << ", Current Occupancy: " << n.currentOccupancy;
+    << n.pricePerNight << ", Current Occupancy: " << n.currentOccupancy;
     return out;
 }
 
@@ -117,3 +117,15 @@ bool Room::operator>(const Room& other) const {
     return other < *this;
 }
 
+void Room::getRooms() {
+         cout <<"Id Room: " << idRoom<<endl
+         << "Is Occupied" << isOccupied << endl
+         << "Price per: "<< pricePerNight<< endl
+         << "Current occupancy: "<< currentOccupancy<< endl;
+}
+
+void Room::writeToFile() const {
+    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Rooms.txt)", ios_base::app);
+    fout << this->getIdRoom() << "\t" << this->getIsOccupied() << "\t" << this->getPricePerNight() << "\t"<< this->getCurrentOccupancy()<<endl;
+    fout.close();
+}

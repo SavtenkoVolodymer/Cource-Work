@@ -2,8 +2,10 @@
 #define HOTELMANEGEMENT_GUEST_H
 
 #include <iostream>
-#include "Reservation.h"
+#include <limits>
+#include <memory>
 #include "Person.h"
+#include "Room.h"
 #include "list"
 using namespace std;
 
@@ -25,10 +27,11 @@ public:
     Guest& operator=(const Guest& other);
     Guest& operator=(Guest&& other) noexcept;
 
-    void addReservation() const override;
-    void viewReservations(const list<Reservation>& reservations) const;
+
+    [[nodiscard]] string toString() const;
+    void getGuest();
     void writeToFile() override;
-    static bool ifExist(int idRoom);
+    static Guest registerGuest();
     static unique_ptr<Room> getRoomFromFile(int idRoom);
 
     template <typename T>
@@ -56,7 +59,7 @@ public:
     [[nodiscard]] bool sortByName(const string& newName) const;
     [[nodiscard]] bool sortByHighYear(int newYear) const;
     [[nodiscard]] bool sortByLowYear(int newYear) const;
-    bool sortBySurname(const string& newSurname) const;
+    [[nodiscard]] bool sortBySurname(const string& newSurname) const;
 
     [[nodiscard]] string getName() const;
     [[nodiscard]] int getIdGuest() const;
@@ -67,6 +70,10 @@ public:
     void setIdGuest(int _idGuest);
     void setYear(int _year);
     void setSurname(const string& _surname);
+
+
+
+    static void addReservation(Guest &guest) ;
 };
 
 #endif //HOTELMANEGEMENT_GUEST_H

@@ -4,21 +4,21 @@
 #include "Date.h"
 #include "Reservation.h"
 #include "Guest.h"
-#include "SingleRoom.h"
-#include "DoubleRoom.h"
-#include "TripleRoom.h"
+#include "GuestMenu.h"
 #include "GuestList.h"
+#include "RoomList.h"
 
 int main() {
 //    Admin admin ("Katya","777");
 //    Admin::addRoom();
+//    Admin::ifExist(2);
 
-    string name = "Vova";
-    string surname = "Savtenko";
+
 //    Guest guest(name,2,2000,surname);
-//    string name1 = "Vova";
-//    string surname1 = "Savtenko";
+//    string name = "Vova";
+//    string surname = "Savtenko";
 //    Guest guest1(name,2,2000,surname);
+//    guest1.sortBySurname("Savtenko");
 //    string name2 = "Vova";
 //    string surname2 = "Savtenko";
 //    Guest guest2(name,2,2000,surname);
@@ -38,10 +38,24 @@ int main() {
 //    guest4.writeToFile();
 //GuestList guestList ;
 //    guestList.printGuests();
-    Date date (2021, 01,12);
-//    string name = "Vlad";
+//    string name = "Vova";
+//    string surname = "Savtenko";
+//    shared_ptr <Guest> guest {new Guest(name , 1, 200,surname)};
+//    Date date (2021, 01,12);
+//    unique_ptr<Room> room = make_unique<Room>(1, false, 1000, 1);
+//    Reservation reservation (guest,  date , date ,std::move(room));
+//    reservation.getPriceFromFile();
+//    guest->writeToFile();
+//    room->writeToFile();
 
-//    Reservation reservation1 (name,  date , date , 1);
+//        RoomList roomList;
+//        RoomList::roomsFromFile("Rooms.txt");
+//
+//        reservation.writeToFile();
+//    GuestList guestList;
+//    guestList.printGuests();
+
+
 //
 //
 //    cout<< reservation1.getGuest()<<endl;
@@ -52,14 +66,58 @@ int main() {
 //    Reservation reservation (name,date , date , 1);
 //    cout<< reservation << endl;
 //    cout << reservation.getPriceFromFile();
-//    cout << *guest.getRoomFromFile(1);
+//    cout << *guest->getRoomFromFile(1);
 
 //    Guest guest(name, 1, 1990, surname);
-//    list<Reservation> reservations = {
-//            Reservation(name, Date(2024, 1, 1), Date(2024, 1, 5), make_unique<SingleRoom>()),
-//            Reservation(name, Date(2024, 2, 10), Date(2024, 2, 15), make_unique<DoubleRoom>())
-//    };
+//    Guest::getRoomFromFile(1);
+//    Room room(104, false, 300, 2);
+//    RoomList roomList;
+//    roomList.addRoom(room);
+//      roomList.roomsFromFile("Rooms.txt");
+
 //
-//    guest.viewReservations(reservations);
+//
+
+
+
+
+    int choice = 0;
+
+    while (choice != 3) {
+        cout << "\nWelcome to the Hotel Management System" << endl;
+        cout << "1. Register as Admin" << endl;
+        cout << "2. Register as Guest" << endl;
+        cout << "3. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                try {
+                    Admin admin;
+                    Admin::registerAdmin();
+                    list<Reservation> reservations = Reservation::reservationFromFile();
+                    Admin::adminMenu(admin, reservations);
+                } catch (const invalid_argument& e) {
+                    cout << "Registration failed: " << e.what() << endl;
+                }
+                break;
+            case 2: {
+                Guest guest = Guest::registerGuest();
+                list<Reservation> reservations = Reservation::reservationFromFile();
+                GuestMenu::menuGuest(guest, reservations);
+                break;
+            }
+            case 3:
+                cout << "Exiting the system. Goodbye!" << endl;
+                break;
+            default:
+                cout << "Invalid choice. Please select 1, 2 or 3." << endl;
+        }
+    }
+
     return 0;
 }
+
+
+

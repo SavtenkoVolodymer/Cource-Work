@@ -91,24 +91,6 @@ build CMakeFiles/HotelManegement.dir/GuestList.cpp.obj: CXX_COMPILER__HotelManeg
   OBJECT_DIR = CMakeFiles\HotelManegement.dir
   OBJECT_FILE_DIR = CMakeFiles\HotelManegement.dir
 
-build CMakeFiles/HotelManegement.dir/SingleRoom.cpp.obj: CXX_COMPILER__HotelManegement_unscanned_Debug C$:/Users/User/Desktop/CourceWork/HotelManegement/SingleRoom.cpp || cmake_object_order_depends_target_HotelManegement
-  DEP_FILE = CMakeFiles\HotelManegement.dir\SingleRoom.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\HotelManegement.dir
-  OBJECT_FILE_DIR = CMakeFiles\HotelManegement.dir
-
-build CMakeFiles/HotelManegement.dir/DoubleRoom.cpp.obj: CXX_COMPILER__HotelManegement_unscanned_Debug C$:/Users/User/Desktop/CourceWork/HotelManegement/DoubleRoom.cpp || cmake_object_order_depends_target_HotelManegement
-  DEP_FILE = CMakeFiles\HotelManegement.dir\DoubleRoom.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\HotelManegement.dir
-  OBJECT_FILE_DIR = CMakeFiles\HotelManegement.dir
-
-build CMakeFiles/HotelManegement.dir/TripleRoom.cpp.obj: CXX_COMPILER__HotelManegement_unscanned_Debug C$:/Users/User/Desktop/CourceWork/HotelManegement/TripleRoom.cpp || cmake_object_order_depends_target_HotelManegement
-  DEP_FILE = CMakeFiles\HotelManegement.dir\TripleRoom.cpp.obj.d
-  FLAGS = -g -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\HotelManegement.dir
-  OBJECT_FILE_DIR = CMakeFiles\HotelManegement.dir
-
 build CMakeFiles/HotelManegement.dir/RoomList.cpp.obj: CXX_COMPILER__HotelManegement_unscanned_Debug C$:/Users/User/Desktop/CourceWork/HotelManegement/RoomList.cpp || cmake_object_order_depends_target_HotelManegement
   DEP_FILE = CMakeFiles\HotelManegement.dir\RoomList.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
@@ -121,6 +103,12 @@ build CMakeFiles/HotelManegement.dir/Person.cpp.obj: CXX_COMPILER__HotelManegeme
   OBJECT_DIR = CMakeFiles\HotelManegement.dir
   OBJECT_FILE_DIR = CMakeFiles\HotelManegement.dir
 
+build CMakeFiles/HotelManegement.dir/GuestMenu.cpp.obj: CXX_COMPILER__HotelManegement_unscanned_Debug C$:/Users/User/Desktop/CourceWork/HotelManegement/GuestMenu.cpp || cmake_object_order_depends_target_HotelManegement
+  DEP_FILE = CMakeFiles\HotelManegement.dir\GuestMenu.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\HotelManegement.dir
+  OBJECT_FILE_DIR = CMakeFiles\HotelManegement.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target HotelManegement
@@ -129,7 +117,7 @@ build CMakeFiles/HotelManegement.dir/Person.cpp.obj: CXX_COMPILER__HotelManegeme
 #############################################
 # Link the executable HotelManegement.exe
 
-build HotelManegement.exe: CXX_EXECUTABLE_LINKER__HotelManegement_Debug CMakeFiles/HotelManegement.dir/main.cpp.obj CMakeFiles/HotelManegement.dir/Admin.cpp.obj CMakeFiles/HotelManegement.dir/Guest.cpp.obj CMakeFiles/HotelManegement.dir/Room.cpp.obj CMakeFiles/HotelManegement.dir/Reservation.cpp.obj CMakeFiles/HotelManegement.dir/Date.cpp.obj CMakeFiles/HotelManegement.dir/GuestList.cpp.obj CMakeFiles/HotelManegement.dir/SingleRoom.cpp.obj CMakeFiles/HotelManegement.dir/DoubleRoom.cpp.obj CMakeFiles/HotelManegement.dir/TripleRoom.cpp.obj CMakeFiles/HotelManegement.dir/RoomList.cpp.obj CMakeFiles/HotelManegement.dir/Person.cpp.obj
+build HotelManegement.exe: CXX_EXECUTABLE_LINKER__HotelManegement_Debug CMakeFiles/HotelManegement.dir/main.cpp.obj CMakeFiles/HotelManegement.dir/Admin.cpp.obj CMakeFiles/HotelManegement.dir/Guest.cpp.obj CMakeFiles/HotelManegement.dir/Room.cpp.obj CMakeFiles/HotelManegement.dir/Reservation.cpp.obj CMakeFiles/HotelManegement.dir/Date.cpp.obj CMakeFiles/HotelManegement.dir/GuestList.cpp.obj CMakeFiles/HotelManegement.dir/RoomList.cpp.obj CMakeFiles/HotelManegement.dir/Person.cpp.obj CMakeFiles/HotelManegement.dir/GuestMenu.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\HotelManegement.dir

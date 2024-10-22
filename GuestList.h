@@ -31,10 +31,7 @@ public:
     [[nodiscard]] size_t getGuestCount() const;
     void guestsFromFile();
 
-//    list <Guest> sortByName();
-//    list <Guest> sortByHigherYear();
-//    list <Guest> sortByLowYear();
-//    list <Guest> sortBySurname();
+    void sortGuestsByName(const string& name);
 
     [[nodiscard]] const list<Guest>& getGuests() const;
     void setGuests(const list<Guest>& newGuests);

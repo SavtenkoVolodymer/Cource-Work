@@ -1,11 +1,11 @@
 #include "Guest.h"
 #include "fstream"
-#include "SingleRoom.h"
-#include "DoubleRoom.h"
-#include "TripleRoom.h"
+#include "Date.h"
+
+
 
 // Constructors
-Guest::Guest() : name(""), idGuest(0), year(0), surname("") {}
+Guest::Guest() : Person(), name(" "), idGuest(0), year(0), surname(" ") {}
 
 Guest::Guest(string &newName, int newIdGuest, int newYear, string &newSurname)
         : name(newName), idGuest(newIdGuest), year(newYear), surname(newSurname) {}
@@ -133,46 +133,24 @@ bool Guest::sortBySurname(const std::string &newSurname) const {
 
 //Functions
 
-//unique_ptr<Room> Guest::getRoomFromFile(int idRoom) {
-//    ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedSingleR.txt)");
-//    unique_ptr<Room> room = make_unique<Room>(Room ());
-//    while(fin >> *room){
-//        if(room->getIdRoom()== idRoom)
-//            return room;
-//    }
-//    fin.close();
-//}
+void Guest::getGuest() {
+    cout <<"Id Guest: " << idGuest <<endl
+    << "Guest name: " << name << endl
+    << "Guest surname: "<< surname<< endl
+    << "Guest date of birth"<<year << endl;
+}
+unique_ptr<Room> Guest::getRoomFromFile(int idRoom) {
+    ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Rooms.txt)");
+    unique_ptr<Room> room = make_unique<Room>(Room ());
+    while(fin >> *room){
+        if(room->getIdRoom()== idRoom)
+            return room;
+    }
+    fin.close();
+    return {};
+}
 
-//void Guest::addReservation() const {
-//    cout << "Enter check in date: " << endl;
-//    unique_ptr <int> year1 = make_unique <int> (getInput<int>("Enter check in year: " ));
-//
-//    unique_ptr <int> month1 = make_unique <int> (getInput<int>("Enter check in month: "));
-//
-//    unique_ptr <int> day1 = make_unique <int> (getInput<int>("Enter check in day: "));
-//
-//    Date date1(*year1, *month1, *day1);
-//
-//    cout << "Enter check out date: " << endl;
-//    unique_ptr <int> year2 = make_unique <int> (getInput<int>("Enter check out year: " ));
-//
-//    unique_ptr <int> month2 = make_unique <int> (getInput<int>("Enter check out month: "));
-//
-//    unique_ptr <int> day2 = make_unique <int> (getInput<int>("Enter check out day: "));
-//
-//    unique_ptr <int> room = make_unique <int> (getInput<int>("Enter number of room: "));
-//    Date date2(*year2, *month2, *day2);
-//    try {
-//        if (ifExist(*room)) {
-//            Reservation reservation(this, date1, date2, Guest::getRoomFromFile(2));
-//            reservation.writeToFile();
-//        } else {
-//            throw runtime_error("This id of room does not exist!!");
-//        }
-//    }catch (exception &e){
-//        cerr << e.what() << endl;
-//    }
-//}
+
 
 void Guest::writeToFile() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Guests.txt)", ios_base::app);
@@ -180,51 +158,34 @@ void Guest::writeToFile() {
     fout.close();
 }
 
+Guest Guest:: registerGuest() {
+    string name, surname;
+    int idGuest, year;
 
-bool Guest::ifExist(int idRoom) {
-    ifstream fin1(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedSingleR.txt)");
-    SingleRoom room1;
-    while (fin1 >> room1) {
-        if (room1.getIdRoom() == idRoom) {
-            return true;
-        }
-    }
-    fin1.close();
+    cout << "\nRegistering Guest:" << endl;
+    cout << "Enter name: ";
+    cin >> name;
+    cout << "Enter surname: ";
+    cin >> surname;
+    cout << "Enter guest ID: ";
+    cin >> idGuest;
+    cout << "Enter birth year: ";
+    cin >> year;
 
-    ifstream fin2(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedDoubleR.txt)");
-    DoubleRoom room2;
-    while (fin2 >> room2) {
-        if (room2.getIdRoom() == idRoom) {
-            return true;
-        }
-    }
-    fin2.close();
+    Guest guest(name, idGuest, year, surname);
 
-    ifstream fin3(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedTripleR.txt)");
-    TripleRoom room3;
-    while (fin3 >> room3) {
-        if (room3.getIdRoom() == idRoom) {
-            return true;
-        }
-    }
-    fin3.close();
-    return false;
+    cout << "Guest successfully registered!" << endl;
+    cout << "Guest details: " << guest << endl;
+
+    guest.writeToFile();
+    return guest;
 }
 
-void Guest::viewReservations(const list<Reservation>& reservations) const {
-    cout << "Reservations for guest: " << name << " (ID: " << idGuest << ")" << endl;
-    bool found = false;
 
-    for (const auto& res : reservations) {
-        if (res.getGuest().getIdGuest() == idGuest) {
-            cout << "Reservation from " << res.getCheckIn().getDate()
-                 << " to " << res.getCheckOut().getDate()
-                 << " in Room " << res.getRoom().getIdRoom() << endl;
-            found = true;
-        }
-    }
 
-    if (!found) {
-        cout << "No reservations found for this guest." << endl;
-    }
+
+string Guest::toString() const {
+    string g_id = std::to_string(idGuest);
+    string g_year = std::to_string(year);
+    return g_id + "\t" +name + "\t" + surname + "\t" + g_year;
 }

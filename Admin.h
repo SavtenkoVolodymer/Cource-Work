@@ -4,10 +4,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "SingleRoom.h"
-#include "DoubleRoom.h"
-#include "TripleRoom.h"
+
 #include "Person.h"
+#include "Reservation.h"
 using namespace std;
 
 class Admin : public Person {
@@ -24,12 +23,17 @@ public:
     friend istream& operator>>(istream& is, Admin& admin);
     ~Admin() override;
 
+    static void registerAdmin();
+    static void adminMenu(Admin& admin, list<Reservation>& reservations);
+    static void viewAllReservations(const list<Reservation>& reservations) ;
     static void addRoom();
     void writeToFile() override;
     static bool ifExist(int idRoom);
-    void removeReservationById(int idGuest, list<Reservation>& reservations);
-//    void checkAvailableRooms(const Date& checkIn, const Date& checkOut, const list<Reservation>& reservations) const;
+    static void removeReservationById(int idGuest, list<Reservation>& reservations);
+    static void checkAvailableRooms(const Date& checkIn, const Date& checkOut, const list<Reservation>& reservations) ;
+    static void saveReservationsToFile(const list<Reservation>& reservations);
 
+    static void shtrix();
 
     template <typename T>
     static T getInput(const string& prompt) {
@@ -60,6 +64,8 @@ public:
     [[nodiscard]] string getPassword() const;
     void setLogin(const string& _login);
     void setPassword(const string& _password);
+
+
 };
 
 #endif //HOTELMANEGEMENT_ADMIN_H

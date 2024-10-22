@@ -1,42 +1,40 @@
 #include "Reservation.h"
-#include "SingleRoom.h"
-#include "DoubleRoom.h"
-#include "TripleRoom.h"
 #include <utility>
 #include "fstream"
 #include "istream"
 
 // Constructors
-Reservation::Reservation() : guest(Guest()), check_in(Date()), check_out(Date()), room(make_unique<Room>(Room())) {}
+Reservation::Reservation() : guest(), check_in(), check_out(), room(nullptr) {}
 
-Reservation::Reservation(Guest &newGuest, Date & newCheckIn, Date & newCheckOut,unique_ptr<Room> newRoom)
-        : guest(newGuest), check_in(newCheckIn), check_out(newCheckOut),  room(std::move(newRoom)) {}
 
-//Reservation::Reservation(const Reservation& reservation)
-//        : guest(reservation.guest), check_in(reservation.check_in), check_out(reservation.check_out), room(reservation.room) {}
+Reservation::Reservation(const shared_ptr<Guest>& newGuest, Date& newCheckIn, Date& newCheckOut, unique_ptr<Room> newRoom)
+        : check_in(newCheckIn), check_out(newCheckOut), room(std::move(newRoom)), guest(newGuest) {}
+
+Reservation::Reservation(const Reservation& reservation)
+        : check_in(reservation.check_in), check_out(reservation.check_out),
+          room(reservation.room ? make_unique<Room>(*reservation.room) : nullptr),
+          guest(reservation.guest) {}
 
 Reservation::Reservation(Reservation&& reservation) noexcept
-        : guest(std::move(reservation.guest)),
-          check_in(std::move(reservation.check_in)),
-          check_out(std::move(reservation.check_out)),
-          room(std::move(reservation.room)) {}
+        : check_in(std::move(reservation.check_in)), check_out(std::move(reservation.check_out)),
+          room(std::move(reservation.room)), guest(std::move(reservation.guest)) {}
 
 Reservation::~Reservation() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Log.txt)", ios_base::app);
-    fout << "Guest: "<< guest << " Room: " << *room << endl;
+    fout << "Guest: "<< this->getGuest()->getName() << " Room: " << *room << endl;
     fout.close();
 }
 
 // Operator =
-//Reservation& Reservation::operator=(const Reservation& reservation) {
-//    if (this != &reservation) {
-//        guest = reservation.guest;
-//        check_in = reservation.check_in;
-//        check_out = reservation.check_out;
-//        room = make_unique<Room>(*reservation.room);
-//    }
-//    return *this;
-//}
+Reservation& Reservation::operator=(const Reservation& reservation) {
+    if (this != &reservation) {
+        guest = reservation.guest;
+        check_in = reservation.check_in;
+        check_out = reservation.check_out;
+        room = make_unique<Room>(*reservation.room);
+    }
+    return *this;
+}
 
 Reservation& Reservation::operator=(Reservation&& reservation) noexcept {
     if (this != &reservation) {
@@ -50,7 +48,10 @@ Reservation& Reservation::operator=(Reservation&& reservation) noexcept {
 
 // Operators == , != , < , >
 bool Reservation::operator==(const Reservation& other) const {
-    return guest == other.guest &&
+    shared_ptr<Guest> thisGuest = guest.lock();
+    shared_ptr<Guest> otherGuest = other.guest.lock();
+
+    return (thisGuest == otherGuest) &&
            check_in == other.check_in &&
            check_out == other.check_out &&
            *room == *other.room;
@@ -61,15 +62,27 @@ bool Reservation::operator!=(const Reservation& other) const {
 }
 
 bool Reservation::operator<(const Reservation& other) const {
-    if (guest != other.guest) {
-        return guest < other.guest;
+    shared_ptr<Guest> thisGuest = guest.lock();
+    shared_ptr<Guest> otherGuest = other.guest.lock();
+
+    if (thisGuest && otherGuest) {
+        if (*thisGuest != *otherGuest) {
+            return *thisGuest < *otherGuest;
+        }
+    } else if (thisGuest) {
+        return false;
+    } else if (otherGuest) {
+        return true;
     }
+
     if (check_in != other.check_in) {
         return check_in < other.check_in;
     }
+
     if (check_out != other.check_out) {
         return check_out < other.check_out;
     }
+
     return *room < *other.room;
 }
 
@@ -78,8 +91,8 @@ bool Reservation::operator>(const Reservation& other) const {
 }
 
 // Getters and Setters
-Guest Reservation::getGuest() const {
-    return guest;
+shared_ptr<Guest> Reservation::getGuest() const {
+    return guest.lock();
 }
 
 Date Reservation::getCheckIn() const {
@@ -94,8 +107,8 @@ const Room& Reservation::getRoom() const {
     return *room;
 }
 
-void Reservation::setGuest(const Guest& newGuest) {
-    guest = newGuest;
+void Reservation::setGuest(const shared_ptr<Guest>& newGuest) {
+    guest = weak_ptr<Guest>(newGuest);
 }
 
 void Reservation::setCheckIn(const Date& newCheckIn) {
@@ -106,14 +119,14 @@ void Reservation::setCheckOut(const Date& newCheckOut) {
     check_out = newCheckOut;
 }
 
-void Reservation::setRoom(unique_ptr<Room> newRoom) {
-    room = std::move(newRoom);
+void Reservation::setRoom(Room &newRoom) {
+    room = make_unique<Room>(newRoom);
 }
 
 
 istream &operator>>(istream& is, Reservation& reservation){
 
-   is >> reservation.guest ;
+   is >> *reservation.getGuest() ;
    int year, month, day;
    is >> year >> month >> day;
    Date checkIn (year , month ,day);
@@ -121,9 +134,7 @@ istream &operator>>(istream& is, Reservation& reservation){
    is >> year >> month >> day;
    Date checkOut (year , month ,day);
     reservation.setCheckOut(checkOut);
-//       is >> *reservation.room;
    is >> day ;
-//   reservation.setRoom(day);
    cout << reservation.getGuest();
    cout << reservation.getCheckIn().getDate();
    cout << reservation.getCheckOut().getDate();
@@ -131,72 +142,80 @@ istream &operator>>(istream& is, Reservation& reservation){
 
    return is;
 }
-//istream& operator>>(istream& is, Reservation& reservation) {
-//    is >> reservation.guest;
-//    int year, month, day;
-//    is >> year >> month >> day;
-//    Date checkIn(year, month, day);
-//    reservation.setCheckIn(checkIn);
-//
-//    is >> year >> month >> day;
-//    Date checkOut(year, month, day);
-//    reservation.setCheckOut(checkOut);
-//
-//    if (!reservation.room) {
-//        reservation.room = make_unique<int>();
-//    }
-//
-//    is >> *reservation.room;
-//
-//    return is;
-//}
 
 
 ostream &operator << (ostream& os, const Reservation& reservation) {
-    os << reservation.guest << "\t" << reservation.getCheckIn().getDate()<< "\t"<<reservation.getCheckOut().getDate() << "\t"
+    os << reservation.getGuest() << "\t" << reservation.getCheckIn().getDate()<< "\t"<<reservation.getCheckOut().getDate() << "\t"
        << *reservation.room;
     return os;
+}
+
+string Reservation::getGuestName() const {
+    return this->getGuest()->getName();
 }
 
 
 void Reservation::writeToFile() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)", ios_base::app);
-    fout << guest << "\t" << check_in.getDate() << "\t" << check_out.getDate() << "\t" << *room<< endl;
+    fout << this->getGuest()->toString() << " " << check_in.getDate() << " " << check_out.getDate() << " " << *room<<endl<< endl;
     fout.close();
 }
 
 double Reservation::getPrice() {
-    double buff = check_out.getDay()-check_in.getDay();
-    return buff * this->getPriceFromFile();
+    return (this->check_out-this->check_in ) * this->getPriceFromFile();
+}
+
+list<Reservation> Reservation::reservationFromFile() {
+    ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)");
+
+    if (!fin.is_open()) {
+        cerr << "Error: Could not open the file " << endl;
+    }
+    list<Reservation> reservations;
+
+    while (fin) {
+        string guestName, guestSurname;
+        int guestId, guestYear;
+
+
+        fin >> guestId >> guestName >> guestSurname >> guestYear;
+        shared_ptr<Guest> guest = make_shared<Guest>(guestName, guestId, guestYear, guestSurname);
+
+        int year, month, day;
+
+        fin >> year >> month >> day;
+        Date checkIn(year, month, day);
+
+        fin >> year >> month >> day;
+
+        Date checkOut(year, month, day);
+
+        int idRoom;
+        bool isOccupied;
+        double pricePerNight;
+        int currentOccupancy;
+        fin >> idRoom >> isOccupied >> pricePerNight >> currentOccupancy;
+
+        unique_ptr<Room> room = make_unique<Room>(idRoom, isOccupied, pricePerNight, currentOccupancy);
+
+        Reservation reservation(guest, checkIn, checkOut, std::move(room));
+
+        reservations.emplace_back(reservation);
+    }
+
+    fin.close();
+    return reservations;
 }
 
 
 double Reservation::getPriceFromFile() const {
-    ifstream fin1(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedSingleR.txt)");
-    SingleRoom room1;
-    while (fin1 >> room1) {
-        if (room1.getIdRoom() == this->getRoom().getIdRoom()) {
-            return room1.getPricePerNight();
+    ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Rooms.txt)");
+    Room rooms;
+    while (fin >> rooms) {
+        if (rooms.getIdRoom() == this->getRoom().getIdRoom()) {
+            return rooms.getPricePerNight();
         }
     }
-    fin1.close();
-
-    ifstream fin2(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedDoubleR.txt)");
-    DoubleRoom room2;
-    while (fin2 >> room2) {
-        if (room2.getIdRoom() == this->getRoom().getIdRoom()) {
-            return room2.getPricePerNight();
-        }
-    }
-    fin2.close();
-
-    ifstream fin3(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\FreedTripleR.txt)");
-    TripleRoom room3;
-    while (fin3 >> room3) {
-        if (room3.getIdRoom() == this->getRoom().getIdRoom()) {
-            return room3.getPricePerNight();
-        }
-    }
-    fin3.close();
+    fin.close();
     return 0;
 }

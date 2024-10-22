@@ -1,18 +1,14 @@
 #ifndef HOTELMANEGEMENT_ROOMLIST_H
 #define HOTELMANEGEMENT_ROOMLIST_H
 
-#include "SingleRoom.h"
-#include "DoubleRoom.h"
-#include "TripleRoom.h"
 #include <list>
 #include <iostream>
+#include "Room.h"
 using namespace std;
 
 class RoomList {
 private:
-    list<SingleRoom> singleRooms;
-    list<DoubleRoom> doubleRooms;
-    list<TripleRoom> tripleRooms;
+    list<Room> rooms;
 
 public:
     RoomList();
@@ -22,14 +18,10 @@ public:
     RoomList& operator=(RoomList&& other) noexcept;
     ~RoomList();
 
-    void addSingleRoom(SingleRoom &singleRoom){
-        singleRooms.push_back(singleRoom);
-    }
-    void addDoubleRoom(DoubleRoom &doubleRoom){
-        doubleRooms.push_back(doubleRoom);
-    }
-    void addTripleRoom(TripleRoom &tripleRoom){
-        tripleRooms.push_back(tripleRoom);
+    void printRooms();
+    void roomsFromFile();
+    void addRoom(Room &room){
+        rooms.push_back(room);
     }
 
 };

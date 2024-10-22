@@ -12,6 +12,9 @@ private:
     unique_ptr<int> month;
     unique_ptr<int> day;
     static bool IsValidDate(int y, int m, int d);
+
+    static int daysInMonth(int month, int year);
+    static bool isLeapYear(int year);
 public:
     Date();
     Date(int y, int m, int d);
@@ -43,6 +46,8 @@ public:
     bool operator ==(const Date &rhs) const;
     bool operator!=(const Date& rhs) const;
     bool operator>(const Date& rhs) const;
+
+    int operator-(const Date& rhs) const;
 
     friend bool isFuture(const Date &lhs, const Date &rhs);
     friend bool isNow(const Date &lhs,const Date &rhs);

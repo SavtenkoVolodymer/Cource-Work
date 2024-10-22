@@ -3,11 +3,11 @@
 // Constructors
 Date::~Date() {
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Log.txt)", ios_base::app);
-    fout << "Year: "<< *year << " Month: " << *month<< " Day: "<< *day<<endl;
+    fout << "Destructor from Date"<< endl;
     fout.close();
 }
 
-Date::Date() : year(std::make_unique<int>(1900)), month(std::make_unique<int>(1)), day(std::make_unique<int>(1)) {}
+Date::Date() : year(std::make_unique<int>()), month(std::make_unique<int>()), day(std::make_unique<int>()) {}
 
 Date::Date(int y, int m, int d) : year(std::make_unique<int>(y)), month(std::make_unique<int>(m)), day(std::make_unique<int>(d)) {
     if (!IsValidDate(y, m, d)) {
@@ -67,6 +67,53 @@ bool Date::IsValidDate(int y, int m, int d) {
     return true;
 }
 
+bool Date::isLeapYear(int year) {
+    if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
+        return true;
+    }
+    return false;
+}
+
+int Date::daysInMonth(int month, int year) {
+    switch (month) {
+        case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+            return 31;
+        case 4: case 6: case 9: case 11:
+            return 30;
+        case 2:
+            return isLeapYear(year) ? 29 : 28;
+        default:
+            return 0; // Некоректний місяць
+    }
+}
+
+int Date::operator-(const Date& rhs) const {
+    // Переводимо обидві дати у кількість днів від початку (наприклад, 1 січня року 0)
+
+    // Функція для підрахунку кількості днів з початку до даної дати
+    auto daysFromStart = [](int year, int month, int day) {
+        int days = day;
+
+        // Додаємо дні всіх попередніх місяців поточного року
+        for (int m = 1; m < month; ++m) {
+            days += Date::daysInMonth(m, year);
+        }
+
+        // Додаємо дні всіх попередніх років
+        for (int y = 0; y < year; ++y) {
+            days += isLeapYear(y) ? 366 : 365;
+        }
+
+        return days;
+    };
+
+    int days1 = daysFromStart(*year, *month, *day);
+    int days2 = daysFromStart(*rhs.year, *rhs.month, *rhs.day);
+
+    // Повертаємо різницю в днях між двома датами
+    return abs(days1 - days2);
+}
+
 void Date::setCurrentDate() {
     auto now = std::chrono::system_clock::now();
     std::time_t t = std::chrono::system_clock::to_time_t(now);
@@ -110,24 +157,23 @@ void Date::setYesterdayDay() {
 
 void Date::setDate() {
     while (true) {
-        std::cout << "Enter date (YYYY-MM-DD): \n";
-        std::string input;
-        std::getline(std::cin >> std::ws, input);  // Use getline to read the entire line
+//        cout << " Enter date (YYYY-MM-DD): \n";
+        string input;
+        getline(cin >> ws, input);  // Використовуємо getline для читання всієї строки
 
-        std::stringstream ss(input);
+        stringstream ss(input);
         char dateDelimiter;
 
         ss >> *year >> dateDelimiter >> *month >> dateDelimiter >> *day;
 
         if (!IsValidDate(*year, *month, *day)) {
-            std::cerr << "Invalid date or time entered.\n" << std::endl;
-            *year = *month = *day =  0;
+            std::cerr << "Invalid date entered. Try again.\n";
         } else {
-            //std::cout << "Date and time entered successfully.\n" << std::endl;
             break;
         }
     }
 }
+
 
 std::string Date::getDate() const {
     std::string g_year = std::to_string(*year);

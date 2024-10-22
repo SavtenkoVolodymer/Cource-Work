@@ -72,6 +72,27 @@ size_t GuestList::getGuestCount() const {
     return guests.size();
 }
 
+void GuestList::sortGuestsByName(const std::string& name) {
+    list<Guest> filteredGuests;
+    guestsFromFile();
+
+    for (const auto& guest : guests) {
+        if (guest.getName() == name) {
+            filteredGuests.push_back(guest);
+        }
+    }
+
+    filteredGuests.sort([](const Guest& a, const Guest& b) {
+        return a.getName() < b.getName();
+    });
+
+    cout << "Guests sorted by name: " << name << endl;
+    for (const auto& guest : filteredGuests) {
+        cout << guest.toString() << endl;
+    }
+}
+
+
 void GuestList::guestsFromFile() {
     ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Guests.txt)");
     Guest guest;
@@ -84,6 +105,7 @@ void GuestList::guestsFromFile() {
 void GuestList::printGuests() {
     this->guestsFromFile();
     for(Guest &guest : guests){
-        cout << guest << endl;
+        guest.getGuest();
+        cout << "--------------------------------------------"<<endl;
     }
 }

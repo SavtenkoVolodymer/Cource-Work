@@ -4,11 +4,14 @@
 
 class Person {
 public:
+    Person()=default;
     virtual ~Person() = default;
 
     virtual void writeToFile() =0;
 
-    virtual void addReservation() const =0;
+//    virtual void addReservation() const =0;
+
+
 
 };
 
