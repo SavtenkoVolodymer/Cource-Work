@@ -30,8 +30,8 @@ istream& operator>>(istream& is, Room& room) {
     return is;
 }
 ostream& operator<<(ostream& out, const Room& n) {
-    out << "Room ID: " << n.idRoom << ", Occupied: " << (n.isOccupied ? "Yes" : "No")
-    << n.pricePerNight << ", Current Occupancy: " << n.currentOccupancy;
+    out << n.idRoom << "\t"<< n.isOccupied << "\t"<< n.pricePerNight <<"\t" << n.currentOccupancy<<"\t";
+//out<< n.idRoom;
     return out;
 }
 

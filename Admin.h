@@ -23,6 +23,9 @@ public:
     friend istream& operator>>(istream& is, Admin& admin);
     ~Admin() override;
 
+    static void updateRoomPrice(int idRoom , double newPrice);
+    static bool ifPasswordExist(const string& password);
+    static bool ifExistAdmin(const string& login);
     static void registerAdmin();
     static void adminMenu(Admin& admin, list<Reservation>& reservations);
     static void viewAllReservations(const list<Reservation>& reservations) ;
@@ -30,9 +33,9 @@ public:
     void writeToFile() override;
     static bool ifExist(int idRoom);
     static void removeReservationById(int idGuest, list<Reservation>& reservations);
-    static void checkAvailableRooms(const Date& checkIn, const Date& checkOut, const list<Reservation>& reservations) ;
+    static void checkAvailableRooms();
     static void saveReservationsToFile(const list<Reservation>& reservations);
-
+    static void viewGuestsWithoutReservations();
     static void shtrix();
 
     template <typename T>

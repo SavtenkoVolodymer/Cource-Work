@@ -1,16 +1,12 @@
  Logged in as admin
 Destructor from Admin
-Destructor from Admin
-Guest: vova Room: Room ID: 1, Occupied: Yes0, Current Occupancy: 0
+Name: Vovchiks Surname: Sava
+Destructor from Date
+Destructor from Date
+Destructor from Room
+Guest: Vovchiks Room: 1	0	2000	2	
+Name: Vovchiks Surname: Sava
 Destructor from Room
 Destructor from Date
 Destructor from Date
-Destructor from Date
-Destructor from Date
-Name: vova Surname: savtenko
-Destructor from Date
-Destructor from Date
-Destructor from Date
-Destructor from Date
-Destructor from Date
-Destructor from Date
+Name: Vovchiks Surname: Sava

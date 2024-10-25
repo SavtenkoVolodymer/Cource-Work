@@ -1,7 +1,5 @@
 #include "Guest.h"
 #include "fstream"
-#include "Date.h"
-
 
 
 // Constructors
@@ -25,7 +23,7 @@ istream& operator>>(istream& is, Guest& guest) {
 }
 
 ostream& operator<<(ostream& os, const Guest& guest) {
-    os << guest.idGuest << "\t" << guest.name << "\t" << guest.surname<< "\t"<< "\t"<<guest.year;
+    os << guest.idGuest << "\t" << guest.name << "\t" << guest.surname<< "\t"<<guest.year<<"\t";
     return os;
 }
 
@@ -114,23 +112,6 @@ void Guest::setSurname(const string& _surname) {
     surname = _surname;
 }
 
-// Sort
-bool Guest::sortByName(const string& newName) const {
-    return name == newName;
-}
-
-bool Guest::sortByHighYear(int newYear) const {
-    return year >= newYear;
-}
-
-bool Guest::sortByLowYear(int newYear) const {
-    return year<= newYear;
-}
-
-bool Guest::sortBySurname(const std::string &newSurname) const {
-    return name == newSurname;
-}
-
 //Functions
 
 void Guest::getGuest() {
@@ -157,20 +138,98 @@ void Guest::writeToFile() {
     fout << idGuest << "\t" << name << "\t" << surname << "\t"<< year << endl;
     fout.close();
 }
+bool Guest::ifExistGuest(int idGuest) {
+    ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Guests.txt)");
+    if (!fin.is_open()) {
+        cerr << "Error: Could not open the file." << endl;
+        return false;
+    }
 
-Guest Guest:: registerGuest() {
+    string name, surname;
+    int existingId, year;
+
+    while (fin >> existingId >> name >> surname >> year) {
+        if (existingId == idGuest) {
+            fin.close();
+            return true;
+        }
+    }
+
+    fin.close();
+    return false;
+}
+
+Guest Guest::registerGuest() {
     string name, surname;
     int idGuest, year;
 
     cout << "\nRegistering Guest:" << endl;
-    cout << "Enter name: ";
-    cin >> name;
-    cout << "Enter surname: ";
-    cin >> surname;
-    cout << "Enter guest ID: ";
-    cin >> idGuest;
-    cout << "Enter birth year: ";
-    cin >> year;
+    while (true) {
+        cout << " Enter name: ";
+        cin >> name;
+        if (!isalpha(name[0]) || !isupper(name[0])) {
+            cout << "Invalid name. The name should start with a capital letter and contain only letters." << endl;
+            continue;
+        }
+        bool valid = true;
+        for (char c : name) {
+            if (!isalpha(c)) {
+                cout << "Invalid name. Name should only contain letters." << endl;
+                valid = false;
+                break;
+            }
+        }
+        if (valid) break;
+    }
+    while (true) {
+        cout << "Enter surname: ";
+        cin >> surname;
+        if (!isalpha(surname[0]) || !isupper(surname[0])) {
+            cout << "Invalid surname. The surname should start with a capital letter and contain only letters." << endl;
+            continue;
+        }
+
+        bool valid = true;
+        for (char c : surname) {
+            if (!isalpha(c)) {
+                cout << "Invalid surname. Surname should only contain letters." << endl;
+                valid = false;
+                break;
+            }
+        }
+        if (valid) break;
+    }
+    while (true) {
+        cout << "Enter guest ID: ";
+        cin >> idGuest;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a valid number for the ID." << endl;
+            continue;
+        }
+        if (ifExistGuest(idGuest)) {
+            cout << "Guest ID already exists. Please enter a different ID." << endl;
+        } else {
+            break;
+        }
+    }
+    while (true) {
+        cout << "Enter birth year: ";
+        cin >> year;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a valid number for the year." << endl;
+            continue;
+        }
+        if (year < 1900 || year > 2024) {
+            cout << "Invalid year. Please enter a year between 1900 and 2024." << endl;
+        } else {
+            break;
+        }
+    }
 
     Guest guest(name, idGuest, year, surname);
 
@@ -180,6 +239,7 @@ Guest Guest:: registerGuest() {
     guest.writeToFile();
     return guest;
 }
+
 
 
 

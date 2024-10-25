@@ -64,33 +64,53 @@ void GuestList::addGuest(const Guest& guest) {
     guests.push_back(guest);
 }
 
-void GuestList::removeGuest(const Guest& guest) {
-    guests.remove(guest);
-}
-
-size_t GuestList::getGuestCount() const {
-    return guests.size();
-}
-
 void GuestList::sortGuestsByName(const std::string& name) {
+    string inputName = name;
+
+    while (true) {
+        if (!isalpha(inputName[0]) || !isupper(inputName[0])) {
+            cout << "Invalid input. The name must start with a capital letter and contain only letters." << endl;
+            cout << "Please enter a valid name: ";
+            cin >> inputName;
+            continue;
+        }
+
+        bool isValid = true;
+        for (char c : inputName) {
+            if (!isalpha(c)) {
+                cout << "Invalid input. The name must contain only letters." << endl;
+                cout << "Please enter a valid name: ";
+                cin >> inputName;
+                isValid = false;
+                break;
+            }
+        }
+
+        if (isValid) {
+            break;
+        }
+    }
     list<Guest> filteredGuests;
     guestsFromFile();
-
     for (const auto& guest : guests) {
-        if (guest.getName() == name) {
+        if (guest.getName() == inputName) {
             filteredGuests.push_back(guest);
         }
     }
-
+    if (filteredGuests.empty()) {
+        cout << "No guests found with the name: " << inputName << endl;
+        return;
+    }
     filteredGuests.sort([](const Guest& a, const Guest& b) {
         return a.getName() < b.getName();
     });
-
-    cout << "Guests sorted by name: " << name << endl;
+    cout << "Guests sorted by name: " << inputName << endl;
     for (const auto& guest : filteredGuests) {
         cout << guest.toString() << endl;
     }
 }
+
+
 
 
 void GuestList::guestsFromFile() {

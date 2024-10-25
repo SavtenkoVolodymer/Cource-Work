@@ -27,39 +27,19 @@ public:
     Guest& operator=(const Guest& other);
     Guest& operator=(Guest&& other) noexcept;
 
-
+    static bool ifExistGuest(int idGuest);
     [[nodiscard]] string toString() const;
     void getGuest();
     void writeToFile() override;
     static Guest registerGuest();
     static unique_ptr<Room> getRoomFromFile(int idRoom);
 
-    template <typename T>
-    static T getInput(const string& prompt) {
-        T value;
-        while (true) {
-            cout << prompt << endl;
-            cin >> value;
-            if (cin.fail()) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cerr << "Invalid input. Please enter a value of the correct type." << endl;
-            } else {
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                return value;
-            }
-        }
-    }
 
     bool operator==(const Guest& other) const;
     bool operator!=(const Guest& other) const;
     bool operator<(const Guest& other) const;
     bool operator>(const Guest& other) const;
 
-    [[nodiscard]] bool sortByName(const string& newName) const;
-    [[nodiscard]] bool sortByHighYear(int newYear) const;
-    [[nodiscard]] bool sortByLowYear(int newYear) const;
-    [[nodiscard]] bool sortBySurname(const string& newSurname) const;
 
     [[nodiscard]] string getName() const;
     [[nodiscard]] int getIdGuest() const;
@@ -73,7 +53,7 @@ public:
 
 
 
-    static void addReservation(Guest &guest) ;
+//    static void addReservation(Guest &guest) ;
 };
 
 #endif //HOTELMANEGEMENT_GUEST_H

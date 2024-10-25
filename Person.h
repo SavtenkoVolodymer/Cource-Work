@@ -9,10 +9,6 @@ public:
 
     virtual void writeToFile() =0;
 
-//    virtual void addReservation() const =0;
-
-
-
 };
 
 

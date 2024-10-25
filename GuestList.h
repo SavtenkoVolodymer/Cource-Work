@@ -27,8 +27,6 @@ public:
 
     void printGuests();
     void addGuest(const Guest& guest);
-    void removeGuest(const Guest& guest);
-    [[nodiscard]] size_t getGuestCount() const;
     void guestsFromFile();
 
     void sortGuestsByName(const string& name);

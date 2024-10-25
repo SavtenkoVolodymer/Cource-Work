@@ -1,0 +1,28 @@
+---------------------------------------------------------------------------------------------
+Welcome!
+This guide will help you navigate the program's features and avoid errors.
+1. Program description:
+   --- The entire program is implemented in English.
+   --- All data is entered only in English.
+   --- If you enter an incorrect value, you will receive a message about this.
+
+2. Main menu:
+   --- In the main menu, you can register or log in as a guest or admin.
+2.1 If you choose 1, you will be able to register or log in as an admin
+   --- if the administrator login is already in the database,
+   then it is considered authorized and will not be duplicated in the database.
+   --- if there is no such login, you can additionally come up with a password for registration,
+   and the object will be recorded in the database.
+2.2 If you chose 2 in the main menu, you can register as a guest,
+    and the object will be recorded in the database.
+
+3. After registration or authorization, you will have access to the admin or guest menu.
+   --- When selecting a function, you must use only numbers.
+   --- If the choice is not correct. The program will notify you about this.
+
+4.  System Rules
+   --- Input validation ensures correct data entry.
+   --- Sorting and filtering allow organizing rooms
+    and reservations by price, dates, and guest details.
+------------------------------------------------------------------------------------------------
+

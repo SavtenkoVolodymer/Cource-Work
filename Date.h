@@ -27,6 +27,8 @@ public:
 
     Date(const Date &date);
     Date(Date &&date) noexcept ;
+    static Date getCurrentDate();
+    void SetCurrentDate();
 
     [[nodiscard]] int getYear() const;
     [[nodiscard]] int getMonth() const;
@@ -36,8 +38,6 @@ public:
     void setYear(int newYear);
     void setMonth(int newMonth);
     void setDay(int newDay);
-    void setCurrentDate();
-    void setYesterdayDay();
     void setDate();
 
     [[nodiscard]] string getDate() const;
@@ -49,9 +49,6 @@ public:
 
     int operator-(const Date& rhs) const;
 
-    friend bool isFuture(const Date &lhs, const Date &rhs);
-    friend bool isNow(const Date &lhs,const Date &rhs);
-    static Date getCurrentDate();
 };
 
 

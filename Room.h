@@ -24,7 +24,6 @@ public:
 
     void getRooms();
     void writeToFile() const;
-    //принт рум
 
     bool operator==(const Room& other) const;
     bool operator!=(const Room& other) const;

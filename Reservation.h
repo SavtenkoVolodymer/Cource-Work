@@ -10,13 +10,13 @@ using namespace std;
 
 class Reservation {
 private:
-    weak_ptr<Guest> guest;
+    Guest guest;
     Date check_in;
     Date check_out;
     unique_ptr<Room> room;
 public:
     Reservation();
-    Reservation(const shared_ptr<Guest>& newGuest, Date& newCheckIn, Date& newCheckOut, unique_ptr<Room> newRoom);
+    Reservation(Guest& newGuest, Date& newCheckIn, Date& newCheckOut, unique_ptr<Room> newRoom);
     Reservation(const Reservation& reservation);
     Reservation(Reservation&& reservation) noexcept;
     friend ostream& operator<<(ostream& os, const Reservation& reservation);
@@ -37,16 +37,15 @@ public:
     bool operator>(const Reservation& other) const;
 
 
-    [[nodiscard]] shared_ptr<Guest> getGuest() const;
+    [[nodiscard]] Guest getGuest() const;
     [[nodiscard]] Date getCheckIn() const;
     [[nodiscard]] Date getCheckOut() const;
     [[nodiscard]] const Room& getRoom() const;
-    [[nodiscard]] string getGuestName() const;
 
-    void setGuest(const shared_ptr<Guest>& newGuest);
     void setCheckIn(const Date& newCheckIn);
     void setCheckOut(const Date& newCheckOut);
     void setRoom(Room & newRoom);
+    void setGuest(const Guest &newGuest);
 };
 
 #endif //HOTELMANEGEMENT_RESERVATION_H

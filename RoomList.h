@@ -20,9 +20,6 @@ public:
 
     void printRooms();
     void roomsFromFile();
-    void addRoom(Room &room){
-        rooms.push_back(room);
-    }
 
 };
 
