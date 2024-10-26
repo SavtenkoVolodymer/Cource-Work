@@ -1,12 +1,36 @@
  Logged in as admin
 Destructor from Admin
-Name: Vovchiks Surname: Sava
+Name: DJjfjff Surname: FJjfjf
 Destructor from Date
 Destructor from Date
 Destructor from Room
-Guest: Vovchiks Room: 1	0	2000	2	
-Name: Vovchiks Surname: Sava
+Guest: DJjfjff Room: 1	1	6000	3	
+Name: DJjfjff Surname: FJjfjf
 Destructor from Room
 Destructor from Date
 Destructor from Date
-Name: Vovchiks Surname: Sava
+Name: DJjfjff Surname: FJjfjf
+Guest: DJjfjff Room: 1	1	6000	3	
+Name: DJjfjff Surname: FJjfjf
+Destructor from Room
+Destructor from Date
+Destructor from Date
+Name: DJjfjff Surname: FJjfjf
+Destructor from Admin
+Name: DJjfjff Surname: FJjfjf
+Destructor from Date
+Destructor from Date
+Destructor from Room
+Guest: DJjfjff Room: 1	1	6000	3	
+Name: DJjfjff Surname: FJjfjf
+Destructor from Room
+Destructor from Date
+Destructor from Date
+Name: DJjfjff Surname: FJjfjf
+Guest: DJjfjff Room: 1	1	6000	3	
+Name: DJjfjff Surname: FJjfjf
+Destructor from Room
+Destructor from Date
+Destructor from Date
+Name: DJjfjff Surname: FJjfjf
+Name: Fjfjfjg Surname: FJfjfjf

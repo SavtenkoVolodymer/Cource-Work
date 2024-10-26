@@ -72,27 +72,77 @@ void GuestMenu::makeReservation(Guest& guest, list<Reservation>& reservations) {
         cerr << e.what() << endl;
     }
 }
-void GuestMenu::cancelReservations(Guest& guest, list<Reservation>& reservations) {
-    bool hasCanceled = false;
+//void GuestMenu::cancelReservations(Guest& guest, list<Reservation>& reservations) {
+//    bool hasCanceled = false;
+//
+//    for (auto it = reservations.begin(); it != reservations.end();) {
+//        if (it->getGuest().getIdGuest() == guest.getIdGuest()) {
+//            it = reservations.erase(it);
+//            cout << "Reservation for guest with ID " << guest.getIdGuest() << " has been canceled." << endl;
+//            hasCanceled = true;
+//        } else {
+//            it->writeToFile();
+//            ++it;
+//
+//        }
+//    }
+//
+//    if (!hasCanceled) {
+//        cout << "No reservations found for guest with ID " << guest.getIdGuest() << "." << endl;
+//    }
+//}
 
-    for (auto it = reservations.begin(); it != reservations.end();) {
-        if (it->getGuest().getIdGuest() == guest.getIdGuest()) {
-            it = reservations.erase(it);
-            cout << "Reservation for guest with ID " << guest.getIdGuest() << " has been canceled." << endl;
+
+void GuestMenu::cancelReservations(int idGuest) {
+    const string originalFilePath = R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)";
+    const string tempFilePath = R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\TempReservations.txt)";
+    const string departureFilePath = R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\DepartureOfGuests.txt)";
+
+    ifstream inputFile(originalFilePath);
+    ofstream tempFile(tempFilePath);
+    ofstream departureFile(departureFilePath, ios_base::app);
+    if (!inputFile.is_open() || !tempFile.is_open() || !departureFile.is_open()) {
+        cerr << "Error: Unable to open file." << endl;
+        return;
+    }
+
+    bool hasCanceled = false;
+    int guestId;
+    string name, surname;
+    int yearGuest, year, month, day;
+    int roomId, isOccupied;
+    double pricePerNight;
+    int currentOccupancy;
+
+    while (inputFile >> guestId >> name >> surname >> yearGuest >> year >> month >> day >> roomId >> isOccupied >> pricePerNight >> currentOccupancy) {
+        if (guestId == idGuest) {
+
+            departureFile << guestId << " " << name << " " << surname << " " << yearGuest << " "
+                          << year << " " << month << " " << day << " "
+                          << roomId << " " << isOccupied << " " << pricePerNight << " " << currentOccupancy << endl;
+            cout << "Reservation for guest with ID " << idGuest << " has been canceled and moved to DepartureOfGuests." << endl;
             hasCanceled = true;
         } else {
-            it->writeToFile();
-            ++it;
-
+            tempFile << guestId << " " << name << " " << surname << " " << yearGuest << " "
+                     << year << " " << month << " " << day << " "
+                     << roomId << " " << isOccupied << " " << pricePerNight << " " << currentOccupancy << endl;
         }
     }
 
+    inputFile.close();
+    tempFile.close();
+    departureFile.close();
+
+    if (remove(originalFilePath.c_str()) != 0) {
+        cerr << "Error deleting original file." << endl;
+    } else if (rename(tempFilePath.c_str(), originalFilePath.c_str()) != 0) {
+        cerr << "Error renaming temporary file." << endl;
+    }
+
     if (!hasCanceled) {
-        cout << "No reservations found for guest with ID " << guest.getIdGuest() << "." << endl;
+        cout << "No reservations found for guest with ID " << idGuest << "." << endl;
     }
 }
-
-
 
 void GuestMenu::viewReservations(Guest& guest, const list<Reservation>& reservations) {
     bool hasReservations = false;
@@ -195,12 +245,16 @@ void GuestMenu::menuGuest(Guest& guest, list<Reservation>& reservations) {
                 break;
             }
             case 2: {
-                viewReservations(guest, reservations);
-                Admin::shtrix();
+                  viewReservations(guest, reservations);
+                  Admin::shtrix();
+
                 break;
             }
             case 3: {
-                GuestMenu::cancelReservations(guest, reservations);
+                int idGuest;
+                cout << "Enter your ID for the reservation you want to cancel: ";
+                cin >> idGuest;
+                GuestMenu::cancelReservations(idGuest);
                 break;
             }
             case 4: {
@@ -224,36 +278,6 @@ void GuestMenu::menuGuest(Guest& guest, list<Reservation>& reservations) {
 }
 
 
-//void Guest::addReservation(Guest& guest) {
-//    cout << "Enter check in date: " << endl;
-//    unique_ptr <int> year1 = make_unique <int> (getInput<int>("Enter check in year: " ));
-//
-//    unique_ptr <int> month1 = make_unique <int> (getInput<int>("Enter check in month: "));
-//
-//    unique_ptr <int> day1 = make_unique <int> (getInput<int>("Enter check in day: "));
-//
-//    Date date1(*year1, *month1, *day1);
-//
-//    cout << "Enter check out date: " << endl;
-//    unique_ptr <int> year2 = make_unique <int> (getInput<int>("Enter check out year: " ));
-//
-//    unique_ptr <int> month2 = make_unique <int> (getInput<int>("Enter check out month: "));
-//
-//    unique_ptr <int> day2 = make_unique <int> (getInput<int>("Enter check out day: "));
-//
-//    unique_ptr <int> room = make_unique <int> (getInput<int>("Enter number of room: "));
-//    Date date2(*year2, *month2, *day2);
-//    shared_ptr<Guest> guest1 {new Guest (guest)};
-//    try {
-//        if (Admin::ifExistGuest(*room)) {
-//            Reservation reservation(guest1, date1, date2, Guest::getRoomFromFile(2));
-//            reservation.writeToFile();
-//        } else {
-//            throw runtime_error("This id of room does not exist!!");
-//        }
-//    }catch (exception &e){
-//        cerr << e.what() << endl;
-//    }
-//}
+
 
 

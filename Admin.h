@@ -28,13 +28,11 @@ public:
     static bool ifExistAdmin(const string& login);
     static void registerAdmin();
     static void adminMenu(Admin& admin, list<Reservation>& reservations);
-    static void viewAllReservations(const list<Reservation>& reservations) ;
     static void addRoom();
     void writeToFile() override;
     static bool ifExist(int idRoom);
-    static void removeReservationById(int idGuest, list<Reservation>& reservations);
+    static void removeReservationById(int idGuest);
     static void checkAvailableRooms();
-    static void saveReservationsToFile(const list<Reservation>& reservations);
     static void viewGuestsWithoutReservations();
     static void shtrix();
 

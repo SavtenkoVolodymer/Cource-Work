@@ -14,13 +14,10 @@ public:
     GuestMenu() = default;
     ~GuestMenu() = default;
 
-    static void cancelReservations(Guest& guest, list<Reservation>& reservations);
+    static void cancelReservations(int idGuest);
     static void menuGuest(Guest& guest, list<Reservation>& reservations);
     static void updateReservationDates(Guest& guest, list<Reservation>& reservations);
     void removeRoomFromFile(int idRoom);
     static void readInstructions();
-
-//    static void addReservation(Guest &guest);
-
 };
 #endif //HOTELMANEGEMENT_GUESTMENU_H

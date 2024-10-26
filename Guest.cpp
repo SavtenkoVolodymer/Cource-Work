@@ -243,7 +243,6 @@ Guest Guest::registerGuest() {
 
 
 
-
 string Guest::toString() const {
     string g_id = std::to_string(idGuest);
     string g_year = std::to_string(year);

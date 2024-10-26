@@ -31,7 +31,7 @@ istream& operator>>(istream& is, Room& room) {
 }
 ostream& operator<<(ostream& out, const Room& n) {
     out << n.idRoom << "\t"<< n.isOccupied << "\t"<< n.pricePerNight <<"\t" << n.currentOccupancy<<"\t";
-//out<< n.idRoom;
+
     return out;
 }
 

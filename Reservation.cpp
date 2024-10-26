@@ -156,6 +156,7 @@ ostream &operator << (ostream& os, const Reservation& reservation) {
 
 
 void Reservation::writeToFile() {
+    room->setIsOccupied(true);
     ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)", ios_base::app);
     fout << this->getGuest().toString() << " " << check_in.getDate() << " " << check_out.getDate() << " " << *room<<endl;
     fout.close();
@@ -164,67 +165,6 @@ void Reservation::writeToFile() {
 double Reservation::getPrice() {
     return (this->check_out-this->check_in ) * this->getPriceFromFile();
 }
-
-//list<Reservation> Reservation::reservationFromFile() {
-//    ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)");
-//
-//    if (!fin.is_open()) {
-//        cerr << "Error: Could not open the file " << endl;
-//    }
-//    list<Reservation> reservations;
-//    int idGuest;
-//    int yearGuest;
-//    string name;
-//    string surname;
-//
-//    int year1, month2, day3;
-//    int year, month, day;
-//
-//    int idRoom;
-//    bool isOccupied;
-//    double pricePerNight;
-//    int currentOccupancy;
-//    while (fin >> idGuest >> name >> surname >> yearGuest >>
-//    year >> month >> day >> year1 >>month2>>day3>>
-//    idRoom>>isOccupied>>pricePerNight>>currentOccupancy) {
-//        Reservation reservation;
-//        reservation.setGuest(Guest (name,idGuest,year,surname));
-//        reservation.setCheckIn(Date(year,month,day));
-//        reservation.setCheckOut(Date(year1,month2,day3));
-//        unique_ptr<Room> room1 = make_unique<Room>(Room(idRoom,isOccupied,pricePerNight,currentOccupancy));
-//        reservation.setRoom(*room1);
-
-//        string guestName, guestSurname;
-//        int guestId, guestYear;
-//
-//        fin >> guestId >> guestName >> guestSurname >> guestYear;
-//        Guest guest (guestName, guestId, guestYear, guestSurname);
-//        int year, month, day;
-//
-//        fin >> year >> month >> day;
-//        Date checkIn(year, month, day);
-//
-//        fin >> year >> month >> day;
-//
-//        Date checkOut(year, month, day);
-//
-//        int idRoom;
-//        bool isOccupied;
-//        double pricePerNight;
-//        int currentOccupancy;
-//        fin >> idRoom >> isOccupied >> pricePerNight >> currentOccupancy;
-//
-//        unique_ptr<Room> room = make_unique<Room>(idRoom, isOccupied, pricePerNight, currentOccupancy);
-//
-//        Reservation reservation(guest, checkIn, checkOut, std::move(room));
-
-
-//        reservations.push_back(reservation);
-//    }
-//    fin.close();
-//    return reservations;
-//}
-
 
 double Reservation::getPriceFromFile() const {
     ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Rooms.txt)");

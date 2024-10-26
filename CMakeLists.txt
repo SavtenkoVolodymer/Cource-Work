@@ -18,7 +18,6 @@ add_executable(HotelManegement main.cpp
         GuestList.h
         RoomList.cpp
         RoomList.h
-        Person.cpp
         Person.h
         GuestMenu.cpp
         GuestMenu.h

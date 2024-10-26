@@ -8,7 +8,6 @@ public:
     virtual ~Person() = default;
 
     virtual void writeToFile() =0;
-
 };
 
 

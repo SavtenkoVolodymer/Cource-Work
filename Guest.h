@@ -52,8 +52,6 @@ public:
     void setSurname(const string& _surname);
 
 
-
-//    static void addReservation(Guest &guest) ;
 };
 
 #endif //HOTELMANEGEMENT_GUEST_H

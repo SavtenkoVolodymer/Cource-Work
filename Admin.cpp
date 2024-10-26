@@ -1,10 +1,8 @@
 #include "Admin.h"
-#include <ctime>
 #include "fstream"
 #include "GuestList.h"
 #include "RoomList.h"
 #include "Reservation.h"
-#include "Date.h"
 
 // Constructors
 Admin::Admin() : login(""), password("") {
@@ -210,25 +208,6 @@ void Admin::updateRoomPrice(int roomId, double newPrice) {
 }
 
 
-void Admin::saveReservationsToFile(const list<Reservation>& reservations) {
-    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)", ios_base::trunc);
-
-    if (!fout.is_open()) {
-        cerr << "Error opening file for writing reservations!" << endl;
-        return;
-    }
-
-    for (const auto& reservation : reservations) {
-        fout << reservation.getGuest().toString() << "\t"
-             << reservation.getCheckIn().getDate() << "\t"
-             << reservation.getCheckOut().getDate() << "\t"
-             << reservation.getRoom().getIdRoom() << "\n";
-    }
-
-    fout.close();
-    cout << "Reservations saved to file successfully." << endl;
-}
-
 bool Admin::ifPasswordExist(const string& password) {
     ifstream fin(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Admins.txt)");
     if (!fin.is_open()) {
@@ -359,45 +338,28 @@ void Admin::adminMenu(Admin &admin, list<Reservation> &reservations) {
         switch (choice) {
             case 1: {
                 Admin::addRoom();
-                shtrix();
                 break;
             }
             case 2:{
                 GuestList guestList;
                 guestList.printGuests();
-                shtrix();
                 break;
             }
-            case 3:{
-                Admin::viewAllReservations(reservations);
-                for(Reservation& reservation: reservations){
-                    cout << "Guest: " << reservation.getGuest().toString()
-                         << ", Check-in: " << reservation.getCheckIn().getDate()
-                         << ", Check-out: " << reservation.getCheckOut().getDate()
-                         << ", Room: " << reservation.getRoom().getIdRoom() << endl;
-                }
-                shtrix();
+
+            case 3: {
+                int idGuest;
+                cout << "Enter the ID of the reservation guest you want to delete:  ";
+                cin >> idGuest;
+                Admin::removeReservationById(idGuest);
                 break;
             }
             case 4: {
-//                int idGuest;
-//                cout << "Enter the guest ID to remove reservation: ";
-//                cin >> idGuest;
-//                Admin::saveReservationsToFile(reservations);
-//                for(auto it = reservations.begin(); it != reservations.end(); ){
-////              it->writeToFile();
-//               cout << *it<<endl;
-//                }
-                Admin::removeReservationById(980, reservations);
-                break;
-            }
-            case 5: {
 
                 Admin::checkAvailableRooms();
                 shtrix();
                 break;
             }
-            case 6: {
+            case 5: {
                 GuestList guestList;
                 string name;
                 cout << "Enter the name of the Guest: ";
@@ -406,24 +368,24 @@ void Admin::adminMenu(Admin &admin, list<Reservation> &reservations) {
                 shtrix();
                 break;
             }
-            case 7: {
+            case 6: {
                 int idRoom = getInput<int>("Enter room ID: ");
                 auto newPrice = getInput<double>("Enter new price: ");
                 updateRoomPrice(idRoom, newPrice);
                 shtrix();
                 break;
             }
-            case 8: {
+            case 7: {
                 Admin::viewGuestsWithoutReservations();
                 shtrix();
                 break;
             }
-            case 9: {
+            case 8: {
                 cout << "Exiting Admin Menu..." << endl;
                 break;
             }
             default:
-                cout << "Invalid choice. Please select a number between 1 and 9." << endl;
+                cout << "Invalid choice. Please select a number between 1 and 8." << endl;
         }
     }
 }
@@ -493,24 +455,61 @@ bool Admin::ifExist(int idRoom) {
     return false;
 }
 
-void Admin::removeReservationById(int idGuest, list<Reservation>& reservations) {
-//    ofstream fout(R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)", ios_base::trunc);
-//    fout.close();
-    for (auto it = reservations.begin(); it != reservations.end();) {
-        const Guest& guest = it->getGuest();
-//        cout << *it;
-        if (guest.getIdGuest() == idGuest) {
-            it = reservations.erase(it);
-            cout << "Reservation for guest with ID " << idGuest << " has been removed." << endl;
+void Admin::removeReservationById(int idGuest) {
+    const string reservationsFilePath = R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\Reservations.txt)";
+    const string tempFilePath = R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\TempReservations.txt)";
+    const string departureFilePath = R"(C:\Users\User\Desktop\CourceWork\HotelManegement\files\DepartureOfGuests.txt)";
+
+    ifstream inputFile(reservationsFilePath);
+    ofstream tempFile(tempFilePath);
+    ofstream departureFile(departureFilePath, ios_base::app);  // Відкриваємо файл для дописування
+
+    if (!inputFile.is_open() || !tempFile.is_open() || !departureFile.is_open()) {
+        cerr << "Error: Unable to open file." << endl;
+        return;
+    }
+
+    bool reservationRemoved = false;
+    int guestId, yearGuest, year, month, day;
+    string name, surname;
+    int roomId, isOccupied;
+    double pricePerNight;
+    int currentOccupancy;
+
+    // Зчитуємо дані з файлу Reservations.txt і копіюємо в тимчасовий файл, якщо ID не збігається
+    while (inputFile >> guestId >> name >> surname >> yearGuest >> year >> month >> day >> roomId >> isOccupied >> pricePerNight >> currentOccupancy) {
+        if (guestId == idGuest) {
+            // Записуємо видалене резервування в DepartureOfGuests.txt
+            departureFile << guestId << " " << name << " " << surname << " " << yearGuest << " "
+                          << year << " " << month << " " << day << " "
+                          << roomId << " " << isOccupied << " " << pricePerNight << " " << currentOccupancy << endl;
+            cout << "Reservation for guest with ID " << idGuest << " has been removed and added to DepartureOfGuests." << endl;
+            reservationRemoved = true;
         } else {
-            ++it;
+            // Зберігаємо резервування в тимчасовому файлі, якщо ID не співпадає
+            tempFile << guestId << " " << name << " " << surname << " " << yearGuest << " "
+                     << year << " " << month << " " << day << " "
+                     << roomId << " " << isOccupied << " " << pricePerNight << " " << currentOccupancy << endl;
         }
     }
-//    for(auto it = reservations.begin(); it != reservations.end(); ){
-//        it->writeToFile();
-////        cout << *it;
-//    }
+
+    inputFile.close();
+    tempFile.close();
+    departureFile.close();
+
+    // Замінюємо оригінальний файл Reservations.txt на тимчасовий файл, якщо було видалене резервування
+    if (reservationRemoved) {
+        if (remove(reservationsFilePath.c_str()) != 0) {
+            cerr << "Error deleting original reservations file." << endl;
+        } else if (rename(tempFilePath.c_str(), reservationsFilePath.c_str()) != 0) {
+            cerr << "Error renaming temporary file to reservations file." << endl;
+        }
+    } else {
+        cout << "No reservations found for guest with ID " << idGuest << "." << endl;
+        remove(tempFilePath.c_str());  // Видаляємо тимчасовий файл, якщо видалення не відбулося
+    }
 }
+
 
 
 void Admin::checkAvailableRooms() {
@@ -563,20 +562,5 @@ void Admin::checkAvailableRooms() {
 
 
 
-
-void Admin::viewAllReservations(const list<Reservation> &reservations) {
-    if (reservations.empty()) {
-        cout << "There are no reservations at the moment." << endl;
-        return;
-    }
-
-    cout << "List of all reservations:" << endl;
-    for (const auto &reservation: reservations) {
-        cout << "Guest: " << reservation.getGuest().toString()
-            << ", Check-in: " << reservation.getCheckIn().getDate()
-             << ", Check-out: " << reservation.getCheckOut().getDate()
-             << ", Room: " << reservation.getRoom().getIdRoom() << endl;
-    }
-}
 
 
